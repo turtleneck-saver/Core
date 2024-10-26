@@ -1,0 +1,37 @@
+.PHONY: commit
+commit:
+	git add .
+	git commit -m "Commit on $$(date '+%Y-%m-%d %H:%M:%S')"
+	git push
+
+.PHONY: migrate
+migrate:
+	poetry run python manage.py migrate
+
+.PHONY: migrations
+migrations:
+	poetry run python manage.py makemigrations
+
+.PHONY: collect
+collect:
+	poetry run python manage.py collectstatic --noinput
+
+.PHONY: npm-run
+npm-run:
+	npm --prefix frontend run build
+
+.PHONY: runserver
+runserver:
+	poetry run uwsgi --ini uwsgi.ini
+	
+ 
+.PHONY: nginx
+nginx:
+	/etc/init.d/nginx restart
+
+.PHONY: all
+all: migrations migrate npm-run collect runserver nginx 
+
+.PHONY: superuser
+superuser:
+	poetry run python manage.py createsuperuser
