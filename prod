@@ -22,6 +22,9 @@ npm-run:
 
 .PHONY: runserver
 runserver:
+	supervisorctl stop ai_app
+	supervisorctl reload
+	supervisorctl update
 	poetry run uwsgi --ini uwsgi.ini
 	
  

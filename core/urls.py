@@ -18,4 +18,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-urlpatterns = [path("admin/", admin.site.urls), path("", include("frontend.urls"))]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    # path("streaming/", include("web_socket.urls")),
+    path("", include("frontend.urls")),
+]

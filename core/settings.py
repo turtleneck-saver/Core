@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-dbw2p!rw0a$3%$#4!x)qum=j5*c*dv01x$kpv1bywi!*&mu6ge"
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["ai-app.p-e.kr"]
 
@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "api.apps.ApiConfig",
     "frontend.apps.FrontendConfig",
+    "channels",
+    "web_socket",
 ]
 
 MIDDLEWARE = [
@@ -35,7 +37,14 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "core.urls"
-
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -51,7 +60,7 @@ TEMPLATES = [
         },
     },
 ]
-
+ASGI_APPLICATION = "core.asgi.application"  # ASGI 애플리케이션 설정
 WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
