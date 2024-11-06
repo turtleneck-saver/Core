@@ -38,13 +38,15 @@ const Video = () => {
 
     socket.current.onmessage = (event) => {
       let data = JSON.parse(event.data);
-      let cur_time = new Date(data.time.slice(0, -1));
+      let cur_time = new Date(data.time.slice(0, -1)); // ISO 형식으로 변환
       console.log(cur_time.toString());
       console.log(time.current.toString());
-      if (data.image && time.current <= cur_time) {
-        time.current = cur_time;
+
+      // Date 객체 비교
+      if (data.image && time.current.getTime() <= cur_time.getTime()) {
         setFrame("data:image/webp;base64," + data.image);
       }
+      time.current = cur_time; // 현재 시간 업데이트
     };
 
     socket.current.onerror = (error) => {

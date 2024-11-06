@@ -6,6 +6,8 @@ import mediapipe as mp
 from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import datetime
+import os
+import pandas as pd
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,10 +24,12 @@ class VideoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
         self.time = None
+        self.result_data = {}
         logging.info("클라이언트와 연결되었습니다.")
 
     async def receive(self, text_data=None, bytes_data=None):
         try:
+
             json_data = json.loads(text_data)
             base64_image = json_data["image"]
             base64_image = base64_image.split(",")[1]
@@ -51,15 +55,16 @@ class VideoConsumer(AsyncWebsocketConsumer):
                         image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS
                     )
                     logging.info("포즈 감지 완료.")
+                    self.preprocess(self.result_data, results.pose_landmarks)
                 else:
                     logging.info("포즈 감지 실패.")
 
                 _, buffer = cv2.imencode(".webp", image)
                 processed_image = base64.b64encode(buffer).decode("utf-8")
+                self.result_data["image"] = processed_image
+                self.result_data["time"] = self.time.isoformat()
 
-                await self.send(
-                    text_data=json.dumps({"image": processed_image, "time": self.time.isoformat()})
-                )
+                await self.send(text_data=json.dumps(self.result_data))
                 logging.info("이미지를 클라이언트에 전송했습니다.")
 
         except json.JSONDecodeError:
@@ -70,3 +75,24 @@ class VideoConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logging.error(f"오류 발생: {str(e)}")
             await self.send(text_data=json.dumps({"error": str(e)}))
+
+    def preprocess(self, result_data, poses):
+        pass
+
+
+class RecordingConsumer(VideoConsumer):
+    async def connect(self):
+        await super().connect()
+        self.path = os.path.join(os.getcwd(), "poses.csv")
+
+    def preprocess(self, result_data, poses):
+
+        logging.info(f"녹화를 시작합니다. {self.path}")
+
+        landmarks = []
+        for landmark in poses.landmark_list:
+            landmarks.append((landmark.x, landmark.y))
+        np_landmarks = np.array(landmarks)
+        np.save(os.path.join(self.path, "landmarks.npy"), np_landmarks)
+        logging.info(f"녹화를 완료합니다. {self.path}")
+        self.path = None
