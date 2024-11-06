@@ -16,11 +16,12 @@ const Video = () => {
   const socket = useRef(null);
   const camera = useRef(null);
   const canvas = useRef(null);
+  const time = useRef(new Date());
   const [frame, setFrame] = useState(null);
 
   const WIDTH = 720;
   const HEIGHT = 360;
-  const FPS = 2;
+  const FPS = 1;
   const TIMER = 1000 / FPS;
 
   useEffect(() => {
@@ -36,8 +37,12 @@ const Video = () => {
     };
 
     socket.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.image) {
+      let data = JSON.parse(event.data);
+      let cur_time = new Date(data.time.slice(0, -1));
+      console.log(cur_time.toString());
+      console.log(time.current.toString());
+      if (data.image && time.current <= cur_time) {
+        time.current = cur_time;
         setFrame("data:image/webp;base64," + data.image);
       }
     };

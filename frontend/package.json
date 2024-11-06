@@ -29,7 +29,9 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@material-ui/icons": "^4.11.3",
+    "@mediapipe/pose": "^0.5.1675469404",
     "@mui/material": "^6.1.1",
+    "@tensorflow/tfjs": "^4.22.0",
     "react-router-dom": "^6.26.2",
     "styled-components": "^6.1.13"
   }
