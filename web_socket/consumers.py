@@ -8,6 +8,7 @@ import logging
 import datetime
 import os
 import pandas as pd
+import math
 
 logging.basicConfig(
     level=logging.INFO,
@@ -79,20 +80,30 @@ class VideoConsumer(AsyncWebsocketConsumer):
     def preprocess(self, result_data, poses):
         pass
 
+    def calcuate_center(self, left, right):
+        x1, y1 = left.x, left.y
+        x2, y2 = right.x, right.y
+
+        return (x1 + x2) / 2, (y1 + y2) / 2
+
+    def calculate_angle(v1, v2, v3=None):
+
+        return angle
+
 
 class RecordingConsumer(VideoConsumer):
     async def connect(self):
         await super().connect()
         self.path = os.path.join(os.getcwd(), "poses.csv")
+        try:
+            self.df = pd.read_csv(self.path)
 
-    def preprocess(self, result_data, poses):
+        except FileNotFoundError:
+            self.df = pd.DataFrame(columns=["", "landmarks"])
 
-        logging.info(f"녹화를 시작합니다. {self.path}")
-
-        landmarks = []
-        for landmark in poses.landmark_list:
-            landmarks.append((landmark.x, landmark.y))
-        np_landmarks = np.array(landmarks)
-        np.save(os.path.join(self.path, "landmarks.npy"), np_landmarks)
-        logging.info(f"녹화를 완료합니다. {self.path}")
-        self.path = None
+    def preprocess(self, poses):
+        landmarks = poses.landmark
+        nose = landmarks[mp_pose.PoseLandmark.NOSE]
+        left_shoulder = landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER]
+        right_shoulder = landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+        horizon_angle = calculate_horizon_angle(left_shoulder, right_shoulder)
