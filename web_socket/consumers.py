@@ -6,9 +6,8 @@ import mediapipe as mp
 from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import datetime
-import os
-import pandas as pd
-import math
+
+CHIN = 152
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,6 +17,7 @@ logging.basicConfig(
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
+mp_face_mesh = mp.solutions.face_mesh
 
 
 class VideoConsumer(AsyncWebsocketConsumer):
@@ -28,9 +28,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
         self.result_data = {}
         logging.info("클라이언트와 연결되었습니다.")
 
-    async def receive(self, text_data=None, bytes_data=None):
+    async def receive(self, text_data=None):
         try:
-
             json_data = json.loads(text_data)
             base64_image = json_data["image"]
             base64_image = base64_image.split(",")[1]
@@ -49,16 +48,31 @@ class VideoConsumer(AsyncWebsocketConsumer):
                 image = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
                 with mp_pose.Pose() as pose:
-                    results = pose.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                    pose_results = pose.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-                if results.pose_landmarks:
+                with mp_face_mesh.FaceMesh() as face_mesh:
+                    face_results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+                if pose_results.pose_landmarks:
                     mp_drawing.draw_landmarks(
-                        image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS
+                        image, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS
                     )
                     logging.info("포즈 감지 완료.")
-                    self.preprocess(self.result_data, results.pose_landmarks)
+                    self.preprocess(self.result_data, pose_results.pose_landmarks)
                 else:
                     logging.info("포즈 감지 실패.")
+
+                if face_results.multi_face_landmarks:
+                    for face_landmarks in face_results.multi_face_landmarks:
+
+                        landmark = face_landmarks.landmark[CHIN]
+                        h, w, _ = image.shape
+                        cx, cy = int(landmark.x * w), int(landmark.y * h)
+                        cv2.circle(image, (cx, cy), 5, (255, 0, 0), -1)  # 턱 랜드마크 그리기
+
+                    logging.info("턱 감지 완료.")
+                else:
+                    logging.info("얼굴 감지 실패.")
 
                 _, buffer = cv2.imencode(".webp", image)
                 processed_image = base64.b64encode(buffer).decode("utf-8")
@@ -80,14 +94,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
     def preprocess(self, result_data, poses):
         pass
 
-    def calcuate_center(self, left, right):
-        x1, y1 = left.x, left.y
-        x2, y2 = right.x, right.y
-
-        return (x1 + x2) / 2, (y1 + y2) / 2
-
     def calculate_angle(v1, v2, v3=None):
-
+        # 각도 계산 로직 추가
         return angle
 
 
