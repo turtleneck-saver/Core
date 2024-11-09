@@ -7,10 +7,10 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import logging
 import datetime
 
-# 랜드마크 인덱스 정의
+
 NOSE = 0
-LEFT_EAR = 7
-RIGHT_EAR = 8
+LEFT_EYE = 7
+RIGHT_EYE = 8
 LEFT_SHOULDER = 11
 RIGHT_SHOULDER = 12
 CHIN = 152
@@ -62,12 +62,14 @@ class VideoConsumer(AsyncWebsocketConsumer):
                     mp_drawing.draw_landmarks(image, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
                     face_landmarks = face_results.multi_face_landmarks[0]
 
-                    chin_landmark = self._change_to_vector(face_landmarks.landmark[CHIN])
-                    nose_landmark = self._change_to_vector(pose_results.pose_landmarks.landmark[NOSE])
-                    left_eye_landmark = self._change_to_vector(face_landmarks.landmark[LEFT_EYE])
-                    right_eye_landmark = self._change_to_vector(face_landmarks.landmark[RIGHT_EYE])
-                    left_shoulder_landmark = self._change_to_vector(pose_results.pose_landmarks.landmark[LEFT_SHOULDER])
-                    right_shoulder_landmark = self._change_to_vector(pose_results.pose_landmarks.landmark[RIGHT_SHOULDER])
+                    chin_landmark = self._change_to_np(face_landmarks.landmark[CHIN])
+                    nose_landmark = self._change_to_np(pose_results.pose_landmarks.landmark[NOSE])
+                    left_eye_landmark = self._change_to_np(face_landmarks.landmark[LEFT_EYE])
+                    right_eye_landmark = self._change_to_np(face_landmarks.landmark[RIGHT_EYE])
+                    left_shoulder_landmark = self._change_to_np(pose_results.pose_landmarks.landmark[LEFT_SHOULDER])
+                    right_shoulder_landmark = self._change_to_np(pose_results.pose_landmarks.landmark[RIGHT_SHOULDER])
+                    middle_shoulder_landmark = (left_shoulder_landmark + right_shoulder_landmark) / 2
+                    left_frame_landmark = np.array([0, chin_landmark[1]])
                     h, w, _ = image.shape
                     cx, cy = int(chin_landmark[0] * w), int(chin_landmark[1] * h)
                     cv2.circle(image, (cx, cy), 5, (255, 0, 0), -1)
@@ -79,6 +81,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
                         left_shoulder_landmark,
                         right_shoulder_landmark,
                         chin_landmark,
+                        middle_shoulder_landmark,
+                        left_frame_landmark,
                     )
                 else:
                     logging.info("포즈 또는 얼굴 감지 실패.")
@@ -100,43 +104,69 @@ class VideoConsumer(AsyncWebsocketConsumer):
             logging.error(f"오류 발생: {str(e)}")
             await self.send(text_data=json.dumps({"error": str(e)}))
 
-    def _preprocess(self, nose, left_eye, right_eye, left_shoulder, right_shoulder, chin):
-        parameters = [(nose, left_eye, right_eye), (nose, left_shoulder, right_shoulder)]
-        pass
+    def _preprocess(self, nose, left_eye, right_eye, left_shoulder, right_shoulder, middle_shoulder, chin, left_frame):
 
-    def _change_to_vector(self, A, B, C):
-        AB = B - A
-        AC = C - A
-        return AB, AC
+        parameters_combination = [
+            [(nose, left_eye, right_eye), self._calculate_ratio],
+            [(nose, left_shoulder, right_shoulder), self._calculate_angle],
+            [(nose, middle_shoulder), self._calculate_angle],
+            [(left_shoulder, right_shoulder), self._calculate_angle],
+            [(left_frame, nose, chin), self._calculate_angle],
+        ]
+        for parameters, func in parameters_combination:
+            result = func(*parameters)
+            logging.info(result)
+
+    def change_to_vector(func):
+        def wrapper(self, A, B, C=None):
+
+            if C is not None:
+
+                AB = B - A
+                AC = C - A
+                return func(self, AB, AC)
+            else:
+                AB = B - A
+                return func(self, AB)
+
+        return wrapper
 
     def _change_to_np(self, joint):
         np_list = np.array([joint.x, joint.y])
         return np_list
 
+    @change_to_vector
     def _calculate_ratio(self, AB, AC):
         ratio = np.linalg.norm(AB) / np.linalg.norm(AC)
         return ratio
 
-    def _calculate_angle(self, AB, AC):
-        cos_theta = np.dot(AB, AC) / (np.linalg.norm(AB) * np.linalg.norm(AC))
-        theta = np.arccos(cos_theta)
+    @change_to_vector
+    def _calculate_angle(self, AB, AC=None):
+        if AC is not None:
+            cos_theta = np.dot(AB, AC) / (np.linalg.norm(AB) * np.linalg.norm(AC))
+            theta = np.arccos(cos_theta)
+
+        else:
+            tan_theta = AB[1] / AB[0]
+            theta = np.arctan(tan_theta)
+
         angle = np.degrees(theta)
         return angle
 
 
-class RecordingConsumer(VideoConsumer):
-    async def connect(self):
-        await super().connect()
-        self.path = os.path.join(os.getcwd(), "poses.csv")
-        try:
-            self.df = pd.read_csv(self.path)
+# class RecordingConsumer(VideoConsumer):
+#     async def connect(self):
+#         await super().connect()
+#         self.path = os.path.join(os.getcwd(), "poses.csv")
+#         try:
+#             self.df = pd.read_csv(self.path)
 
-        except FileNotFoundError:
-            self.df = pd.DataFrame(columns=["", "landmarks"])
+#         except FileNotFoundError:
+#             self.df = pd.DataFrame(columns=["", "landmarks"])
 
-    def preprocess(self, landmarks):
-        landmarks = joints.landmark
-        nose = landmarks[mp_pose.PoseLandmark.NOSE]
-        left_shoulder = landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER]
-        right_shoulder = landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER]
-        horizon_angle = calculate_horizon_angle(left_shoulder, right_shoulder)
+#     def preprocess(self, landmarks):
+#         landmarks = joints.landmark
+#         nose = landmarks[mp_pose.PoseLandmark.NOSE]
+#         left_shoulder = landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER]
+#         right_shoulder = landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+#         horizon_angle = calculate_horizon_angle(left_shoulder, right_shoulder)
