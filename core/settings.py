@@ -1,15 +1,23 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = "django-insecure-dbw2p!rw0a$3%$#4!x)qum=j5*c*dv01x$kpv1bywi!*&mu6ge"
 
-DEBUG = False
+DEBUG = False if os.getenv("PROD") else True
 
-ALLOWED_HOSTS = ["ai-app.p-e.kr"]
+ALLOWED_HOSTS = ["ai-app.p-e.kr"] if not DEBUG else ["*"]
+
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_USER = os.getenv("POSTGRES_USER")
+POSTGRES_NAME = os.getenv("POSTGRES_NAME")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST")
+POSTGRES_PORT = int(os.getenv("POSTGRES_PORT"))
 
 
 INSTALLED_APPS = [
@@ -24,6 +32,8 @@ INSTALLED_APPS = [
     "frontend.apps.FrontendConfig",
     "channels",
     "web_socket",
+    "django_celery_beat",
+    "django_celery_results",
 ]
 
 MIDDLEWARE = [
@@ -41,7 +51,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [("127.0.0.1", 6379, 1)],
         },
     },
 }
@@ -60,14 +70,25 @@ TEMPLATES = [
         },
     },
 ]
-ASGI_APPLICATION = "core.asgi.application"  # ASGI 애플리케이션 설정
+ASGI_APPLICATION = "core.asgi.application"
 WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
+    "default": (
+        {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": POSTGRES_NAME,
+            "USER": POSTGRES_USER,
+            "PASSWORD": POSTGRES_PASSWORD,
+            "HOST": POSTGRES_HOST,
+            "PORT": POSTGRES_PORT,
+        }
+        if not DEBUG
+        else {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    )
 }
 
 
@@ -105,3 +126,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_SERIALIZER = "json"
+CELERY_TIMEZONE = "Asia/Seoul"
