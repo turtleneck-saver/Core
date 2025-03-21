@@ -1,4 +1,5 @@
 import os
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -18,6 +19,56 @@ POSTGRES_USER = os.getenv("POSTGRES_USER")
 POSTGRES_NAME = os.getenv("POSTGRES_NAME")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST")
 POSTGRES_PORT = int(os.getenv("POSTGRES_PORT"))
+
+
+class ColoredFormatter(logging.Formatter):
+    COLORS = {
+        "DEBUG": "\033[94m",  # 파란색
+        "INFO": "\033[92m",  # 초록색
+        "WARNING": "\033[93m",  # 노란색
+        "ERROR": "\033[91m",  # 빨간색
+        "CRITICAL": "\033[41m",  # 빨간색 배경
+    }
+    RESET = "\033[0m"
+
+    def format(self, record):
+        log_color = self.COLORS.get(record.levelname, self.RESET)
+        return f"{log_color}{super().format(record)}{self.RESET}"
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "colored": {
+            "()": ColoredFormatter,  # 컬러 포맷터 사용
+        },
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "colored",  # 컬러 포맷터 사용
+            "level": "DEBUG",  # 콘솔 핸들러의 로그 레벨을 DEBUG로 설정
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs/prod.log"),
+            "formatter": "verbose",
+            "level": "DEBUG",  # 파일 핸들러의 로그 레벨을 DEBUG로 설정
+        },
+    },
+    "loggers": {
+        "prod": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",  # 모든 로그 출력
+            "propagate": True,
+        }
+    },
+}
 
 
 INSTALLED_APPS = [

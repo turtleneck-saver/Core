@@ -16,11 +16,7 @@ LEFT_SHOULDER = 11
 RIGHT_SHOULDER = 12
 CHIN = 152
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("video_consumer.log"), logging.StreamHandler()],
-)
+logger = logging.getLogger("prod")
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -35,7 +31,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         self.image = None
 
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
-        logging.info("클라이언트와 연결되었습니다.")
+        logger.info("클라이언트와 연결되었습니다.")
 
     async def receive(self, text_data=None):
         try:
@@ -51,7 +47,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
             else:
                 self.time = time
 
-                logging.info("이미지 수신 중...")
+                logger.info("이미지 수신 중...")
 
                 np_img = np.frombuffer(image, np.uint8)
                 self.image = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
@@ -63,16 +59,24 @@ class VideoConsumer(AsyncWebsocketConsumer):
                     face_results = face_mesh.process(cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
 
                 if pose_results.pose_landmarks and face_results.multi_face_landmarks:
-                    mp_drawing.draw_landmarks(self.image, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+                    mp_drawing.draw_landmarks(
+                        self.image, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS
+                    )
                     face_landmarks = face_results.multi_face_landmarks[0]
 
                     chin_landmark = self._change_to_np(face_landmarks.landmark[CHIN])
                     nose_landmark = self._change_to_np(pose_results.pose_landmarks.landmark[NOSE])
                     left_eye_landmark = self._change_to_np(face_landmarks.landmark[LEFT_EYE])
                     right_eye_landmark = self._change_to_np(face_landmarks.landmark[RIGHT_EYE])
-                    left_shoulder_landmark = self._change_to_np(pose_results.pose_landmarks.landmark[LEFT_SHOULDER])
-                    right_shoulder_landmark = self._change_to_np(pose_results.pose_landmarks.landmark[RIGHT_SHOULDER])
-                    middle_shoulder_landmark = (left_shoulder_landmark + right_shoulder_landmark) / 2
+                    left_shoulder_landmark = self._change_to_np(
+                        pose_results.pose_landmarks.landmark[LEFT_SHOULDER]
+                    )
+                    right_shoulder_landmark = self._change_to_np(
+                        pose_results.pose_landmarks.landmark[RIGHT_SHOULDER]
+                    )
+                    middle_shoulder_landmark = (
+                        left_shoulder_landmark + right_shoulder_landmark
+                    ) / 2
                     left_frame_landmark = np.array([0, chin_landmark[1]])
                     h, w, _ = self.image.shape
                     cx, cy = int(chin_landmark[0] * w), int(chin_landmark[1] * h)
@@ -92,7 +96,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
                     result_data["state"] = self._predict(results)
                 else:
 
-                    logging.info("포즈 또는 얼굴 감지 실패.")
+                    logger.info("포즈 또는 얼굴 감지 실패.")
 
                 _, buffer = cv2.imencode(".webp", self.image)
                 self.image = base64.b64encode(buffer).decode("utf-8")
@@ -100,18 +104,28 @@ class VideoConsumer(AsyncWebsocketConsumer):
                 result_data["time"] = self.time.isoformat()
 
                 await self.send(text_data=json.dumps(result_data))
-                logging.info("이미지를 클라이언트에 전송했습니다.")
+                logger.info("이미지를 클라이언트에 전송했습니다.")
 
         except json.JSONDecodeError:
-            logging.error("JSON 디코딩 오류 발생.")
+            logger.error("JSON 디코딩 오류 발생.")
             await self.send(text_data=json.dumps({"error": "Invalid JSON"}))
         except BrokenPipeError:
-            logging.warning("클라이언트와의 연결이 끊어졌습니다.")
+            logger.warning("클라이언트와의 연결이 끊어졌습니다.")
         except Exception as e:
-            logging.error(f"오류 발생: {str(e)}")
+            logger.error(f"오류 발생: {str(e)}")
             await self.send(text_data=json.dumps({"error": str(e)}))
 
-    def _preprocess(self, nose, left_eye, right_eye, left_shoulder, right_shoulder, middle_shoulder, chin, left_frame):
+    def _preprocess(
+        self,
+        nose,
+        left_eye,
+        right_eye,
+        left_shoulder,
+        right_shoulder,
+        middle_shoulder,
+        chin,
+        left_frame,
+    ):
 
         parameters_combination = [
             [(nose, left_eye, right_eye), self._calculate_ratio],
@@ -172,4 +186,3 @@ class VideoConsumer(AsyncWebsocketConsumer):
 
         angle = np.degrees(theta)
         return angle
-
