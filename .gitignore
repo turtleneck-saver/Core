@@ -120,3 +120,6 @@ yarn.lock
 temp/
 
 tmp/
+main.js
+main.js.LICENSE.txt
+static/admin/css/forms.css
