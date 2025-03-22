@@ -22,10 +22,12 @@ celery = {extras = ["redis"], version = "^5.4.0"}
 django-celery-beat = "^2.7.0"
 django-celery-results = "^2.5.1"
 python-dotenv = "^1.0.1"
+autopep8 = "^2.3.2"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
+autopep8 = "^2.3.2"
 
 [build-system]
 requires = ["poetry-core"]
