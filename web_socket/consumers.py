@@ -54,26 +54,32 @@ class VideoConsumer(AsyncWebsocketConsumer):
 
                 with mp_pose.Pose() as pose:
                     pose_results = pose.process(
-                        cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
+                        cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+                    )
 
                 with mp_face_mesh.FaceMesh() as face_mesh:
                     face_results = face_mesh.process(
-                        cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB))
+                        cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+                    )
 
                 if pose_results.pose_landmarks and face_results.multi_face_landmarks:
                     mp_drawing.draw_landmarks(
-                        self.image, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS
+                        self.image,
+                        pose_results.pose_landmarks,
+                        mp_pose.POSE_CONNECTIONS,
                     )
                     face_landmarks = face_results.multi_face_landmarks[0]
 
-                    chin_landmark = self._change_to_np(
-                        face_landmarks.landmark[CHIN])
+                    chin_landmark = self._change_to_np(face_landmarks.landmark[CHIN])
                     nose_landmark = self._change_to_np(
-                        pose_results.pose_landmarks.landmark[NOSE])
+                        pose_results.pose_landmarks.landmark[NOSE]
+                    )
                     left_eye_landmark = self._change_to_np(
-                        face_landmarks.landmark[LEFT_EYE])
+                        face_landmarks.landmark[LEFT_EYE]
+                    )
                     right_eye_landmark = self._change_to_np(
-                        face_landmarks.landmark[RIGHT_EYE])
+                        face_landmarks.landmark[RIGHT_EYE]
+                    )
                     left_shoulder_landmark = self._change_to_np(
                         pose_results.pose_landmarks.landmark[LEFT_SHOULDER]
                     )
@@ -85,8 +91,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
                     ) / 2
                     left_frame_landmark = np.array([0, chin_landmark[1]])
                     h, w, _ = self.image.shape
-                    cx, cy = int(chin_landmark[0] *
-                                 w), int(chin_landmark[1] * h)
+                    cx, cy = int(chin_landmark[0] * w), int(chin_landmark[1] * h)
                     cv2.circle(self.image, (cx, cy), 5, (255, 0, 0), -1)
 
                     results = self._preprocess(
@@ -152,11 +157,25 @@ class VideoConsumer(AsyncWebsocketConsumer):
         input_features = np.array(results).reshape(1, -1)
         prediction = self.model.predict(input_features)[0]
         if prediction == 1:
-            cv2.putText(self.image, "danger", (50, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(
+                self.image,
+                "danger",
+                (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (0, 0, 255),
+                2,
+            )
         else:
-            cv2.putText(self.image, "safe", (50, 50),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+            cv2.putText(
+                self.image,
+                "safe",
+                (50, 50),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (0, 255, 0),
+                2,
+            )
 
         return str(prediction)
 
@@ -186,8 +205,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
     @change_to_vector
     def _calculate_angle(self, AB, AC=None):
         if AC is not None:
-            cos_theta = np.dot(AB, AC) / (np.linalg.norm(AB)
-                                          * np.linalg.norm(AC))
+            cos_theta = np.dot(AB, AC) / (np.linalg.norm(AB) * np.linalg.norm(AC))
             theta = np.arccos(cos_theta)
 
         else:
