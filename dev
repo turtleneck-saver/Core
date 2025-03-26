@@ -1,37 +1,36 @@
 .PHONY: commit
 commit:
-    git add .
-    git commit - m "Commit on $$(date '+%Y-%m-%d %H:%M:%S')"
-    git push
+	git add .
+	git commit -m "Commit on $$(date '+%Y-%m-%d %H:%M:%S')"
+	git push
 
 .PHONY: migrate
 migrate:
-    poetry run python manage.py migrate
+	poetry run python manage.py migrate
 
 .PHONY: migrations
 migrations:
-    poetry run python manage.py makemigrations
+	poetry run python manage.py makemigrations
 
 .PHONY: collect
 collect:
-    poetry run python manage.py collectstatic - -noinput
+	poetry run python manage.py collectstatic --noinput
 
 .PHONY: npm-run
 npm-run:
-    npm - -prefix frontend run build
+	npm --prefix frontend run build
 
 .PHONY: runserver
 runserver:
-    poetry run python manage.py runserver
+	poetry run python manage.py runserver
 
 .PHONY: all
 all: migrations migrate npm-run collect runserver
 
 .PHONY: superuser
 superuser:
-    poetry run python manage.py createsuperuser
-
+	poetry run python manage.py createsuperuser
 
 .PHONY: npm-dev
 npm-dev:
-    npm - -prefix frontend run dev
+	npm --prefix frontend run dev
