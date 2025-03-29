@@ -4,7 +4,16 @@ import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/white.css";
 import styled from "styled-components";
 import applecat from "/app/frontend/src/assets/apple-cat.gif";
+import turtleman from "/app/frontend/src/assets/turtleman.mp4";
+import intro from "/app/frontend/src/assets/intro.mp4";
+import pikachu from "/app/frontend/src/assets/pikachu.cur";
+import turtleneck from "/app/frontend/src/assets/turtleneck.jpg";
+import turtleneckstep from "/app/frontend/src/assets/turtleneck-step.png";
+import businessman from "/app/frontend/src/assets/businessman.png";
+import landmarks from "/app/frontend/src/assets/landmarks.png";
+import wallpaper1 from "/app/frontend/src/assets/wallpaper1.jpg";
 const Style = styled.div`
+  cursor: url(${pikachu}), auto !important;
   .reveal {
     position: absolute;
     width: 100%;
@@ -70,7 +79,6 @@ const Page1 = styled.div`
   }
 `;
 const Page2 = styled.div`
-  cursor: url("/app/frontend/src/assets/apple-cat.gif"), auto; /* GIF를 커서로 설정 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -91,12 +99,12 @@ const Page2 = styled.div`
   }
 
   #title {
-    font-size: 4em;
+    font-size: 3em;
     font-weight: bold;
   }
 
   .index {
-    font-size: 1.4em;
+    font-size: 1em;
     font-weight: bold;
     color: #6f42c1;
     transition: transform 0.3s ease; /* 부드러운 전환 효과 */
@@ -114,8 +122,97 @@ const Page2 = styled.div`
     transform: translateY(-5px); /* 마우스 오버 시 위로 이동 */
   }
 `;
+const Page3 = styled.div`
+  background-image: url(${businessman});
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: -10;
+
+  .info {
+    height: 80%;
+    transition: transform 0.3s ease;
+  }
+  #statistics:hover {
+    transform: scale(1.1);
+  }
+
+  /* 모달 스타일 */
+  .modal {
+    display: ${(props) => (props.show ? "block" : "none")};
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1em;
+  }
+
+  .modal-content {
+    border-radius: 1em;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+`;
+
+const Page4 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: -10;
+  #title {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0.5em;
+    padding: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  #background {
+    border-radius: 0.8em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+  .info {
+    height: 80%;
+    transition: transform 0.3s ease;
+  }
+  .info:hover {
+    transform: scale(1.1);
+  }
+`;
 
 const About = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
   const videoRef = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   useEffect(() => {
@@ -128,15 +225,26 @@ const About = () => {
 
     deck.initialize();
 
-    // 슬라이드 변경 이벤트 리스너 추가
     deck.on("slidechanged", (event) => {
-      // const currentSlide = event.currentSlide;
-      // const video = videoRef.current;
-      // if (currentSlide.querySelector("video")) {
-      //   video.play(); // 현재 슬라이드에서 비디오 재생
-      // } else {
-      //   video.pause(); // 이전 슬라이드에서 비디오 정지
-      // }
+      const currentSlide = event.currentSlide;
+
+      // 현재 슬라이드의 모든 비디오 태그 선택
+      const videos = currentSlide.querySelectorAll("video");
+      try {
+        // 모든 비디오에 대해 작업 수행
+        if (videos.length > 0) {
+          videos.forEach((video) => {
+            video.play(); // 현재 슬라이드에서 비디오 재생
+          });
+        } else {
+          const allVideos = document.querySelectorAll("video");
+          allVideos.forEach((video) => {
+            video.pause(); // 비디오가 없다면 모든 비디오 정지
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     });
 
     return () => {
@@ -151,10 +259,7 @@ const About = () => {
           {/* <section>
             <Page1>
               <video ref={videoRef} autoPlay loop muted>
-                <source
-                  src="https://videos.pexels.com/video-files/8343369/8343369-uhd_2560_1440_25fps.mp4"
-                  type="video/mp4"
-                />
+                <source src={turtleman} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <h2 id="title">인공지능종합설계</h2>
@@ -163,15 +268,12 @@ const About = () => {
               <li className="member">서정빈</li>
               <li className="member">이나연</li>
             </Page1>
-          </section> */}
+          </section>
 
           <section>
             <Page2>
               <video ref={videoRef} autoPlay loop muted>
-                <source
-                  src="https://videos.pexels.com/video-files/10741100/10741100-hd_2560_1440_30fps.mp4"
-                  type="video/mp4"
-                />
+                <source src={intro} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <h2 id="title">목차</h2>
@@ -204,14 +306,36 @@ const About = () => {
                 ))}
               </ol>
             </Page2>
-          </section>
+          </section> */}
+          {/* <section>
+            <Page3 show={modalVisible}>
+              <h2>서론[주제 소개]</h2>
+              <img
+                className="info"
+                src={turtleneck}
+                onClick={toggleModal}
+                alt="Turtleneck"
+              />
+              <div
+                className="modal"
+                style={{ display: modalVisible ? "block" : "none" }}
+              >
+                <div className="modal-content">
+                  <span className="close" onClick={toggleModal}>
+                    &times;
+                  </span>
+                  <h2>거북목의 단계</h2>
+                  <img src={turtleneckstep}></img>
+                </div>
+              </div>
+            </Page3>
+          </section> */}
           <section>
-            <h2>Third Slide</h2>
-            <ul>
-              <li>Item 1</li>
-              <li>Item 2</li>
-              <li>Item 3</li>
-            </ul>
+            <Page4>
+              <img id="background" src={wallpaper1} />
+              <h2 id="title">서론[목적 및 목표]</h2>
+              <img className="info" src={landmarks} alt="Landmarks" />
+            </Page4>
           </section>
         </div>
       </div>
