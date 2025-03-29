@@ -11,9 +11,32 @@ import turtleneck from "/app/frontend/src/assets/turtleneck.jpg";
 import turtleneckstep from "/app/frontend/src/assets/turtleneck-step.png";
 import businessman from "/app/frontend/src/assets/businessman.png";
 import landmarks from "/app/frontend/src/assets/landmarks.png";
-import wallpaper1 from "/app/frontend/src/assets/wallpaper1.jpg";
+import wallpaper1 from "/app/frontend/src/assets/wallpaper1.mp4";
 const Style = styled.div`
   cursor: url(${pikachu}), auto !important;
+  transition: transform 0.3s ease; /* 부드러운 전환 효과 */
+  .info {
+    height: 17em;
+    margin: 0px;
+  }
+  .background {
+    border-radius: 0.8em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+  .title {
+    font-size: 2em;
+    color: rgb(145, 252, 216);
+    transform: translateY(-20%);
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
   .reveal {
     position: absolute;
     width: 100%;
@@ -44,14 +67,6 @@ const Page1 = styled.div`
   height: 100%;
   position: relative;
 
-  #title {
-    font-size: 2em;
-    color: white;
-    transform: translateY(-20%);
-    z-index: 1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-
   #sub-title {
     font-size: 1em;
     color: white;
@@ -60,17 +75,6 @@ const Page1 = styled.div`
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
-  video {
-    border-radius: 0.8em;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translate(-50%, -50%);
-    z-index: 0;
-  }
   .member {
     transform: translateX(150%);
     font-size: 0.8em;
@@ -86,28 +90,11 @@ const Page2 = styled.div`
   height: 100%;
   position: relative;
   z-index: -10;
-  video {
-    border-radius: 0.8em;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-  }
-
-  #title {
-    font-size: 3em;
-    font-weight: bold;
-  }
 
   .index {
     font-size: 1em;
     font-weight: bold;
     color: #6f42c1;
-    transition: transform 0.3s ease; /* 부드러운 전환 효과 */
   }
   .gif {
     position: absolute;
@@ -123,21 +110,7 @@ const Page2 = styled.div`
   }
 `;
 const Page3 = styled.div`
-  background-image: url(${businessman});
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  position: relative;
-  z-index: -10;
-
-  .info {
-    height: 80%;
-    transition: transform 0.3s ease;
-  }
-  #statistics:hover {
+  .info:hover {
     transform: scale(1.1);
   }
 
@@ -180,27 +153,8 @@ const Page4 = styled.div`
   height: 100%;
   position: relative;
   z-index: -10;
-  #title {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 0.5em;
-    padding: 10px;
-    font-size: 1.5em;
-    font-weight: bold;
-  }
-  #background {
-    border-radius: 0.8em;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-  }
-  .info {
-    height: 80%;
-    transition: transform 0.3s ease;
+  .title {
+    margin-top: 1em;
   }
   .info:hover {
     transform: scale(1.1);
@@ -256,13 +210,13 @@ const About = () => {
     <Style>
       <div className="reveal">
         <div className="slides">
-          {/* <section>
+          <section>
             <Page1>
-              <video ref={videoRef} autoPlay loop muted>
+              <video ref={videoRef} className="background" autoPlay loop muted>
                 <source src={turtleman} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <h2 id="title">인공지능종합설계</h2>
+              <h2 className="title">인공지능종합설계</h2>
               <p id="sub-title">거북목 방지 프로젝트</p>
               <li className="member">최지웅</li>
               <li className="member">서정빈</li>
@@ -272,11 +226,11 @@ const About = () => {
 
           <section>
             <Page2>
-              <video ref={videoRef} autoPlay loop muted>
+              <video ref={videoRef} className="background" autoPlay loop muted>
                 <source src={intro} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <h2 id="title">목차</h2>
+              <h2 className="title">목차</h2>
               <ol>
                 {[
                   "서론",
@@ -306,16 +260,20 @@ const About = () => {
                 ))}
               </ol>
             </Page2>
-          </section> */}
-          {/* <section>
+          </section>
+          <section>
             <Page3 show={modalVisible}>
-              <h2>서론[주제 소개]</h2>
+              <h2 className="title">서론[주제 소개]</h2>
               <img
                 className="info"
                 src={turtleneck}
-                onClick={toggleModal}
                 alt="Turtleneck"
+                onClick={toggleModal}
               />
+              <video ref={videoRef} className="background" autoPlay loop muted>
+                <source src={wallpaper1} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
               <div
                 className="modal"
                 style={{ display: modalVisible ? "block" : "none" }}
@@ -325,15 +283,15 @@ const About = () => {
                     &times;
                   </span>
                   <h2>거북목의 단계</h2>
-                  <img src={turtleneckstep}></img>
+                  <img className="info" src={turtleneckstep}></img>
                 </div>
               </div>
             </Page3>
-          </section> */}
+          </section>
           <section>
             <Page4>
-              <img id="background" src={wallpaper1} />
-              <h2 id="title">서론[목적 및 목표]</h2>
+              <img className="background" src={wallpaper1} />
+              <h2 className="title">서론[목적 및 목표]</h2>
               <img className="info" src={landmarks} alt="Landmarks" />
             </Page4>
           </section>
