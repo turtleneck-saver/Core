@@ -1,10 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Reveal from "reveal.js";
 import "reveal.js/dist/reveal.css";
-import "reveal.js/dist/theme/white.css"; // 원하는 테마로 변경
+import "reveal.js/dist/theme/white.css";
 import styled from "styled-components";
-
+import applecat from "/app/frontend/src/assets/apple-cat.gif";
+import turtleman from "/app/frontend/src/assets/turtleman.mp4";
+import intro from "/app/frontend/src/assets/intro.mp4";
+import pikachu from "/app/frontend/src/assets/pikachu.cur";
+import turtleneck from "/app/frontend/src/assets/turtleneck.jpg";
+import turtleneckstep from "/app/frontend/src/assets/turtleneck-step.png";
+import businessman from "/app/frontend/src/assets/businessman.png";
+import landmarks from "/app/frontend/src/assets/landmarks.png";
+import wallpaper1 from "/app/frontend/src/assets/wallpaper1.mp4";
 const Style = styled.div`
+  cursor: url(${pikachu}), auto !important;
+  transition: transform 0.3s ease; /* 부드러운 전환 효과 */
+  .info {
+    height: 17em;
+    margin: 0px;
+  }
+  .background {
+    border-radius: 0.8em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+  .title {
+    font-size: 2em;
+    color: rgb(145, 252, 216);
+    transform: translateY(-20%);
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
   .reveal {
     position: absolute;
     width: 100%;
@@ -22,53 +54,121 @@ const Style = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100%; /* 각 슬라이드가 전체 화면을 사용하도록 설정 */
-    position: relative; /* 비디오 배경을 위한 상대 위치 */
+    height: 100%;
+    position: relative;
   }
 `;
 
 const Page1 = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 수직 중앙 정렬 */
-  align-items: center; /* 수평 중앙 정렬 */
-  height: 100%; /* 부모 요소의 높이를 100%로 설정 */
-  position: relative; /* 자식 요소를 위한 상대 위치 */
-
-  #title {
-    font-size: 2em;
-    color: white; /* 텍스트 색상을 흰색으로 변경 */
-    transform: translateY(-20%); /* 상단 50% 위치로 이동 */
-    z-index: 1; /* 텍스트가 비디오 위에 보이도록 설정 */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
 
   #sub-title {
     font-size: 1em;
-    color: white; /* 텍스트 색상을 흰색으로 변경 */
-    transform: translateY(-50%); /* 상단 50% 위치로 이동 */
-    z-index: 1; /* 텍스트가 비디오 위에 보이도록 설정 */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 그림자 추가 */
+    color: white;
+    transform: translateY(-50%);
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
-  /* 비디오 스타일 */
-  video {
-    border-radius: 10%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 비디오가 영역을 가득 채우도록 설정 */
-    transform: translate(-50%, -50%);
-    z-index: 0; /* 비디오가 배경으로 보이도록 설정 */
-  }
   .member {
     transform: translateX(150%);
+    font-size: 0.8em;
+    font-weight: bold;
+    color: skyblue;
+  }
+`;
+const Page2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: -10;
+
+  .index {
+    font-size: 1em;
+    font-weight: bold;
+    color: #6f42c1;
+  }
+  .gif {
+    position: absolute;
+    width: 1.4em; /* GIF의 크기 조정 */
+    height: auto;
+    display: none; /* 기본적으로 숨김 */
+    top: -20%; /* 중앙에 위치하도록 설정 */
+    left: -20%; /* 항목 오른쪽에 위치 */
+    z-index: 1; /* 텍스트 위에 표시 */
+  }
+  .index:hover {
+    transform: translateY(-5px); /* 마우스 오버 시 위로 이동 */
+  }
+`;
+const Page3 = styled.div`
+  .info:hover {
+    transform: scale(1.1);
+  }
+
+  /* 모달 스타일 */
+  .modal {
+    display: ${(props) => (props.show ? "block" : "none")};
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 1em;
+  }
+
+  .modal-content {
+    border-radius: 1em;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+`;
+
+const Page4 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+  z-index: -10;
+  .title {
+    margin-top: 1em;
+  }
+  .info:hover {
+    transform: scale(1.1);
   }
 `;
 
 const About = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+  const videoRef = useRef(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   useEffect(() => {
     const deck = new Reveal({
       backgroundTransition: "slide",
@@ -76,7 +176,30 @@ const About = () => {
       width: "100%",
       height: "100%",
     });
+
     deck.initialize();
+
+    deck.on("slidechanged", (event) => {
+      const currentSlide = event.currentSlide;
+
+      // 현재 슬라이드의 모든 비디오 태그 선택
+      const videos = currentSlide.querySelectorAll("video");
+      try {
+        // 모든 비디오에 대해 작업 수행
+        if (videos.length > 0) {
+          videos.forEach((video) => {
+            video.play(); // 현재 슬라이드에서 비디오 재생
+          });
+        } else {
+          const allVideos = document.querySelectorAll("video");
+          allVideos.forEach((video) => {
+            video.pause(); // 비디오가 없다면 모든 비디오 정지
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
 
     return () => {
       deck.destroy(); // 컴포넌트 언마운트 시 정리
@@ -89,14 +212,11 @@ const About = () => {
         <div className="slides">
           <section>
             <Page1>
-              <video autoPlay loop muted>
-                <source
-                  src="https://videos.pexels.com/video-files/8343369/8343369-uhd_2560_1440_25fps.mp4"
-                  type="video/mp4"
-                />
+              <video ref={videoRef} className="background" autoPlay loop muted>
+                <source src={turtleman} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <h2 id="title">인공지능종합설계</h2>
+              <h2 className="title">인공지능종합설계</h2>
               <p id="sub-title">거북목 방지 프로젝트</p>
               <li className="member">최지웅</li>
               <li className="member">서정빈</li>
@@ -105,16 +225,75 @@ const About = () => {
           </section>
 
           <section>
-            <h2>Second Slide</h2>
-            <p>Here is some information.</p>
+            <Page2>
+              <video ref={videoRef} className="background" autoPlay loop muted>
+                <source src={intro} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <h2 className="title">목차</h2>
+              <ol>
+                {[
+                  "서론",
+                  "문제 정의",
+                  "리서치 및 조사",
+                  "프로젝트 개요",
+                  "설계 및 개발",
+                  "기존 프로젝트와의 차별점",
+                  "프로토타입",
+                ].map((item, index) => (
+                  <li
+                    key={index}
+                    className="index"
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    {item}
+                    {hoveredIndex === index && (
+                      <img
+                        src={applecat} // 여기에 표시할 GIF의 경로를 입력하세요
+                        alt="GIF"
+                        className="gif"
+                        style={{ display: "block" }} // 마우스 오버 시 보이도록 설정
+                      />
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </Page2>
           </section>
           <section>
-            <h2>Third Slide</h2>
-            <ul>
-              <li>Item 1</li>
-              <li>Item 2</li>
-              <li>Item 3</li>
-            </ul>
+            <Page3 show={modalVisible}>
+              <h2 className="title">서론[주제 소개]</h2>
+              <img
+                className="info"
+                src={turtleneck}
+                alt="Turtleneck"
+                onClick={toggleModal}
+              />
+              <video ref={videoRef} className="background" autoPlay loop muted>
+                <source src={wallpaper1} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div
+                className="modal"
+                style={{ display: modalVisible ? "block" : "none" }}
+              >
+                <div className="modal-content">
+                  <span className="close" onClick={toggleModal}>
+                    &times;
+                  </span>
+                  <h2>거북목의 단계</h2>
+                  <img className="info" src={turtleneckstep}></img>
+                </div>
+              </div>
+            </Page3>
+          </section>
+          <section>
+            <Page4>
+              <img className="background" src={wallpaper1} />
+              <h2 className="title">서론[목적 및 목표]</h2>
+              <img className="info" src={landmarks} alt="Landmarks" />
+            </Page4>
           </section>
         </div>
       </div>
