@@ -11,14 +11,16 @@ import Section2 from "./sections/section2";
 import Section3 from "./sections/section3";
 import Section4 from "./sections/section4";
 const Style = styled.div`
-  cursor: url(${pikachu}), auto !important;
-  .controls-arrow {
+  * {
     cursor: url(${pikachu}), auto !important;
   }
   .info {
     transition: transform 0.6s ease;
     height: 17em;
     margin: 0px;
+  }
+  .info:hover {
+    transform: scale(1.1);
   }
   .background {
     border-radius: 0.8em;
@@ -37,6 +39,16 @@ const Style = styled.div`
     transform: translateY(-20%);
     z-index: 1;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: bounce 2s infinite; /* 애니메이션 적용 */
+  }
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px); /* 위로 이동 */
+    }
   }
   .reveal {
     position: absolute;

@@ -21,7 +21,7 @@ const Style = styled.div`
     width: 1.4em;
     height: auto;
     display: none;
-    top: -20%;
+    top: -35%;
     left: -20%;
     z-index: 1;
   }
