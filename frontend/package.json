@@ -38,7 +38,7 @@
     "@tensorflow/tfjs": "^4.22.0",
     "react-router-dom": "^6.26.2",
     "react-scripts": "^5.0.1",
-    "reveal.js": "^5.2.0",
+    "reveal.js": "^5.2.1",
     "styled-components": "^6.1.13"
   },
   "browserslist": {

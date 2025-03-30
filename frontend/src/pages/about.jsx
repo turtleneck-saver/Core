@@ -3,15 +3,15 @@ import Reveal from "reveal.js";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/white.css";
 import styled from "styled-components";
-import applecat from "/app/frontend/src/assets/apple-cat.gif";
-import turtleman from "/app/frontend/src/assets/turtleman.mp4";
-import intro from "/app/frontend/src/assets/intro.mp4";
-import pikachu from "/app/frontend/src/assets/pikachu.cur";
-import turtleneck from "/app/frontend/src/assets/turtleneck.jpg";
-import turtleneckstep from "/app/frontend/src/assets/turtleneck-step.png";
-import businessman from "/app/frontend/src/assets/businessman.png";
-import landmarks from "/app/frontend/src/assets/landmarks.png";
-import wallpaper1 from "/app/frontend/src/assets/wallpaper1.mp4";
+import applecat from "../assets/apple-cat.gif";
+import turtleman from "../assets/turtleman.mp4";
+import intro from "../assets/intro.mp4";
+import pikachu from "../assets/pikachu.cur";
+import turtleneck from "../assets/turtleneck.jpg";
+import turtleneckstep from "../assets/turtleneck-step.png";
+import businessman from "../assets/businessman.png";
+import landmarks from "../assets/landmarks.png";
+import wallpaper1 from "../assets/wallpaper1.mp4";
 const Style = styled.div`
   cursor: url(${pikachu}), auto !important;
   transition: transform 0.3s ease; /* 부드러운 전환 효과 */
@@ -197,6 +197,7 @@ const About = () => {
           });
         }
       } catch (error) {
+        console.log("에러 발생");
         console.error(error);
       }
     });
@@ -222,78 +223,6 @@ const About = () => {
               <li className="member">서정빈</li>
               <li className="member">이나연</li>
             </Page1>
-          </section>
-
-          <section>
-            <Page2>
-              <video ref={videoRef} className="background" autoPlay loop muted>
-                <source src={intro} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <h2 className="title">목차</h2>
-              <ol>
-                {[
-                  "서론",
-                  "문제 정의",
-                  "리서치 및 조사",
-                  "프로젝트 개요",
-                  "설계 및 개발",
-                  "기존 프로젝트와의 차별점",
-                  "프로토타입",
-                ].map((item, index) => (
-                  <li
-                    key={index}
-                    className="index"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    {item}
-                    {hoveredIndex === index && (
-                      <img
-                        src={applecat} // 여기에 표시할 GIF의 경로를 입력하세요
-                        alt="GIF"
-                        className="gif"
-                        style={{ display: "block" }} // 마우스 오버 시 보이도록 설정
-                      />
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </Page2>
-          </section>
-          <section>
-            <Page3 show={modalVisible}>
-              <h2 className="title">서론[주제 소개]</h2>
-              <img
-                className="info"
-                src={turtleneck}
-                alt="Turtleneck"
-                onClick={toggleModal}
-              />
-              <video ref={videoRef} className="background" autoPlay loop muted>
-                <source src={wallpaper1} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div
-                className="modal"
-                style={{ display: modalVisible ? "block" : "none" }}
-              >
-                <div className="modal-content">
-                  <span className="close" onClick={toggleModal}>
-                    &times;
-                  </span>
-                  <h2>거북목의 단계</h2>
-                  <img className="info" src={turtleneckstep}></img>
-                </div>
-              </div>
-            </Page3>
-          </section>
-          <section>
-            <Page4>
-              <img className="background" src={wallpaper1} />
-              <h2 className="title">서론[목적 및 목표]</h2>
-              <img className="info" src={landmarks} alt="Landmarks" />
-            </Page4>
           </section>
         </div>
       </div>
