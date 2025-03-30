@@ -12,8 +12,11 @@ import Section3 from "./sections/section3";
 import Section4 from "./sections/section4";
 const Style = styled.div`
   cursor: url(${pikachu}), auto !important;
-  transition: transform 0.3s ease; /* 부드러운 전환 효과 */
+  .controls-arrow {
+    cursor: url(${pikachu}), auto !important;
+  }
   .info {
+    transition: transform 0.6s ease;
     height: 17em;
     margin: 0px;
   }

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import wallpaper1 from "../../assets/wallpaper1.mp4";
+import wallpaper2 from "../../assets/wallpaper2.mp4";
 import landmarks from "../../assets/landmarks.png";
 
 const Style = styled.div`
@@ -24,7 +24,10 @@ const Section4 = () => {
   return (
     <section>
       <Style>
-        <img className="background" src={wallpaper1} alt="Background" />
+        <video className="background" autoPlay loop muted>
+          <source src={wallpaper2} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
         <h2 className="title">서론[목적 및 목표]</h2>
         <img className="info" src={landmarks} alt="Landmarks" />
       </Style>

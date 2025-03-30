@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import turtleneck from "../../assets/turtleneck.jpg";
+import turtleneckstep from "../../assets/turtleneck-step.png";
 import wallpaper1 from "../../assets/wallpaper1.mp4";
 
 const Style = styled.div`
@@ -64,7 +65,7 @@ const Section3 = () => {
               &times;
             </span>
             <h2>거북목의 단계</h2>
-            <img className="info" src={turtleneck} alt="Turtleneck Step" />
+            <img className="info" src={turtleneckstep} alt="Turtleneck Step" />
           </div>
         </div>
       </Style>
