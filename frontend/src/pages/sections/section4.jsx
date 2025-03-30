@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import wallpaper2 from "../../assets/wallpaper2.mp4";
 import landmarks from "../../assets/landmarks.png";
-
+import Section from "../utils/section";
 const Style = styled.div`
   display: flex;
   flex-direction: column;
@@ -22,16 +22,11 @@ const Style = styled.div`
 
 const Section4 = () => {
   return (
-    <section>
+    <Section src={wallpaper2} title={"서론[목적 및 목표]"}>
       <Style>
-        <video className="background" autoPlay loop muted>
-          <source src={wallpaper2} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <h2 className="title">서론[목적 및 목표]</h2>
         <img className="info" src={landmarks} alt="Landmarks" />
       </Style>
-    </section>
+    </Section>
   );
 };
 

@@ -18,6 +18,7 @@ const Style = styled.div`
     transition: transform 0.6s ease;
     height: 17em;
     margin: 0px;
+    z-index: 2;
   }
   .info:hover {
     transform: scale(1.1);
