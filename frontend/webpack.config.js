@@ -22,16 +22,16 @@ module.exports = {
         test: /\.css$/, // .css 파일에 대한 규칙
         use: [
           "style-loader", // CSS를 DOM에 주입
-          "css-loader",   // CSS를 JS로 변환
+          "css-loader", // CSS를 JS로 변환
         ],
       },
       {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|png|jpg)$/, // 비디오 및 오디오 파일 처리 규칙
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|png|jpg|gif|cur)$/, // 비디오 및 오디오 파일 처리 규칙
         use: [
           {
             loader: "file-loader", // 파일 로더 사용
             options: {
-              name: '[path][name].[ext]', // 파일 이름 및 경로 유지
+              name: "[path][name].[ext]", // 파일 이름 및 경로 유지
             },
           },
         ],
@@ -43,11 +43,11 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'), // 환경 변수 설정
-    })
+      "process.env.NODE_ENV": JSON.stringify("production"), // 환경 변수 설정
+    }),
   ],
   resolve: {
-    extensions: ['.js', '.jsx'], // .js 및 .jsx 파일 확장자 처리
+    extensions: [".js", ".jsx"], // .js 및 .jsx 파일 확장자 처리
   },
-  mode: 'production', // 프로덕션 모드 설정
+  mode: "production", // 프로덕션 모드 설정
 };

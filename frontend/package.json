@@ -36,6 +36,7 @@
     "@mediapipe/pose": "^0.5.1675469404",
     "@mui/material": "^6.1.1",
     "@tensorflow/tfjs": "^4.22.0",
+    "react-ion-icon": "^4.0.0",
     "react-router-dom": "^6.26.2",
     "react-scripts": "^5.0.1",
     "reveal.js": "^5.2.1",
