@@ -2,7 +2,7 @@
 commit:
 	git add .
 	git commit -m "Commit on $$(date '+%Y-%m-%d %H:%M:%S')"
-	git push
+	git push origin master
 
 .PHONY: migrate
 migrate:
