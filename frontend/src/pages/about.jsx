@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import Reveal from "reveal.js";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/white.css";
 import styled from "styled-components";
-import applecat from "../assets/apple-cat.gif";
-import turtleman from "../assets/turtleman.mp4";
-import intro from "../assets/intro.mp4";
+
 import pikachu from "../assets/pikachu.cur";
-import turtleneck from "../assets/turtleneck.jpg";
-import turtleneckstep from "../assets/turtleneck-step.png";
-import businessman from "../assets/businessman.png";
-import landmarks from "../assets/landmarks.png";
-import wallpaper1 from "../assets/wallpaper1.mp4";
+
+import Section1 from "./sections/section1";
+import Section2 from "./sections/section2";
+import Section3 from "./sections/section3";
+import Section4 from "./sections/section4";
 const Style = styled.div`
   cursor: url(${pikachu}), auto !important;
   transition: transform 0.3s ease; /* 부드러운 전환 효과 */
@@ -59,116 +57,7 @@ const Style = styled.div`
   }
 `;
 
-const Page1 = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  position: relative;
-
-  #sub-title {
-    font-size: 1em;
-    color: white;
-    transform: translateY(-50%);
-    z-index: 1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-
-  .member {
-    transform: translateX(150%);
-    font-size: 0.8em;
-    font-weight: bold;
-    color: skyblue;
-  }
-`;
-const Page2 = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  position: relative;
-  z-index: -10;
-
-  .index {
-    font-size: 1em;
-    font-weight: bold;
-    color: #6f42c1;
-  }
-  .gif {
-    position: absolute;
-    width: 1.4em; /* GIF의 크기 조정 */
-    height: auto;
-    display: none; /* 기본적으로 숨김 */
-    top: -20%; /* 중앙에 위치하도록 설정 */
-    left: -20%; /* 항목 오른쪽에 위치 */
-    z-index: 1; /* 텍스트 위에 표시 */
-  }
-  .index:hover {
-    transform: translateY(-5px); /* 마우스 오버 시 위로 이동 */
-  }
-`;
-const Page3 = styled.div`
-  .info:hover {
-    transform: scale(1.1);
-  }
-
-  /* 모달 스타일 */
-  .modal {
-    display: ${(props) => (props.show ? "block" : "none")};
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 1em;
-  }
-
-  .modal-content {
-    border-radius: 1em;
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-`;
-
-const Page4 = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  position: relative;
-  z-index: -10;
-  .title {
-    margin-top: 1em;
-  }
-  .info:hover {
-    transform: scale(1.1);
-  }
-`;
-
 const About = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
-  const videoRef = useRef(null);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
   useEffect(() => {
     const deck = new Reveal({
       backgroundTransition: "slide",
@@ -197,7 +86,6 @@ const About = () => {
           });
         }
       } catch (error) {
-        console.log("에러 발생");
         console.error(error);
       }
     });
@@ -211,19 +99,10 @@ const About = () => {
     <Style>
       <div className="reveal">
         <div className="slides">
-          <section>
-            <Page1>
-              <video ref={videoRef} className="background" autoPlay loop muted>
-                <source src={turtleman} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <h2 className="title">인공지능종합설계</h2>
-              <p id="sub-title">거북목 방지 프로젝트</p>
-              <li className="member">최지웅</li>
-              <li className="member">서정빈</li>
-              <li className="member">이나연</li>
-            </Page1>
-          </section>
+          <Section1 />
+          <Section2 />
+          <Section3 />
+          <Section4 />
         </div>
       </div>
     </Style>
