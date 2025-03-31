@@ -1,10 +1,8 @@
 <div align="center">
 
-
 <img src="image.png" width="400"/>
 
 ### 거북목 방지 프로젝트 🖍️
-
 
 [<img src="https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white" />](https://github.com/creepereye1204/turtleneck-saver) [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/release-v1.0.0-ㅎㄱㄷ두?style=flat&logo=google-chrome&logoColor=white" />](https://github.com/creepereye1204/turtleneck-saver/tags)
 <br/> [<img src="https://img.shields.io/badge/프로젝트 기간-2024.9.12~2025.6.23-fab2ac?style=flat&logo=&logoColor=white" />]()
@@ -13,10 +11,9 @@
 
 # 개요
 
-- 목이 앞으로 쏠려 거북이가<img src="banana-cat.gif" width="40px"/>  되기전에 해당 서비스를 통해 예방합시다.
+- 목이 앞으로 쏠려 거북이가<img src="banana-cat.gif" width="40px"/> 되기전에 해당 서비스를 통해 예방합시다.
 
 - 초기세팅 (20초)의 시간만 있다면 당신도 드문 안아픈 사람이<img src="apple-cat.gif" width="40px"/> 될수있습니다.
-
 
 - 웹캠으로 당신의 목의 상태를 트래킹하고 알림으로 경고를 줍니다.
 
@@ -32,7 +29,6 @@
 
 ### 서비스 URL : https://ai-app.p-e.kr
 
-
 - 프로젝트 소개
 - 프로젝트 화면 구성
 - 사용한 기술 스택
@@ -40,6 +36,10 @@
 - 프로젝트 팀원
 
 <br />
+
+### 아키 텍쳐
+
+![alt text](아키텍쳐.drawio.png)
 
 ### 화면 구성
 
@@ -288,27 +288,22 @@ edges_image = PIL.Image.fromarray(edges.astype(np.uint8))
 
 ### 도커만 있으면 어디서든 사용가능합니다.
 
-
 ```bash
 docker pull creepereye/turtleneck-saver:0.1
 ```
 
-
-
 | <img src="https://user-images.githubusercontent.com/55467050/137036906-a6c0f879-5b51-49d3-8e02-d01994f64d18.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/55467050/137036911-ccb70714-15fc-46fb-a074-19bb769727e9.png" alt="IE" width="16px" height="16px" /> Internet Explorer | <img src="https://user-images.githubusercontent.com/55467050/137036913-033a988f-b9c9-4980-8540-5994cfa7e465.jpg" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/55467050/137036914-1a1f080e-9fb3-4b29-a143-517be979e78f.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/55467050/137036916-91328771-5dd5-41fb-a842-8562db3c480c.png" alt="Firefox" width="16px" height="16px" /> Firefox |
-| :---------: | :---------: | :---------: | :---------: | :---------: |
-| Yes | 11+ | Yes | Yes | Yes |
-
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                                Yes                                                                                 |                                                                                    11+                                                                                    |                                                                              Yes                                                                               |                                                                                Yes                                                                                 |                                                                                 Yes                                                                                  |
 
 <h3> 💾 Versions</h3>
 
 | <img src="https://user-images.githubusercontent.com/55467050/137045584-9bfa3e0f-eafa-49b2-b10a-6cd8bb753e66.png" alt="Pytorch" width="16px" height="16px" /> Pytorch | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="react" width="16px" height="16px" /> React | <img src="https://user-images.githubusercontent.com/55467050/137045575-88aa70a8-3c3d-46d4-b975-d43ffc7f1891.png" alt="Django" width="16px" height="16px" /> Django | 🍃 Mongo DB | 🐳 Docker | Ⓜ️ MUI |
-| :---------: | :---------: | :---------: | :---------: | :---------: | :---------: |
-| 1.9.0+ | 17.0.2+ | 3.0.7+ | 4.4+ | 20.10.x+ | 5.0.1+ |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------: | :-------: | :----: |
+|                                                                                1.9.0+                                                                                |                                                                             17.0.2+                                                                              |                                                                               3.0.7+                                                                               |    4.4+     | 20.10.x+  | 5.0.1+ |
+
 <br/>
 
 ## 스킬 아이콘 출처
 
 https://github.com/tandpfun/skill-icons?tab=readme-ov-file#icons-list
-
-
