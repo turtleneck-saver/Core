@@ -3,9 +3,7 @@ import Reveal from "reveal.js";
 import "reveal.js/dist/reveal.css";
 import "reveal.js/dist/theme/white.css";
 import styled from "styled-components";
-
 import pikachu from "../assets/pikachu.cur";
-
 import Section1 from "./sections/section1";
 import Section2 from "./sections/section2";
 import Section3 from "./sections/section3";
