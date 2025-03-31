@@ -45,7 +45,7 @@ const Section3 = () => {
   return (
     <section>
       <Style show={modalVisible}>
-        <h2 className="title">서론[주제 소개]</h2>
+        <h2 className="title">서론</h2>
         <img
           className="info"
           src={turtleneck}

@@ -22,7 +22,7 @@ const Style = styled.div`
 
 const Section4 = () => {
   return (
-    <Section src={wallpaper2} title={"서론[목적 및 목표]"}>
+    <Section src={wallpaper2} title={"문제 정의"}>
       <Style>
         <img className="info" src={landmarks} alt="Landmarks" />
       </Style>

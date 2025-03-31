@@ -339,7 +339,7 @@ const Section5 = () => {
       label: "배포 방식",
       url: "https://hudi.blog/zero-downtime-deployment/",
     },
-    { icon: "person-outline", color: "#a529ff", label: "사용자", url: "/user" },
+    { icon: "person-outline", color: "#a529ff", label: "피드백", url: "/user" },
     {
       icon: "videocam-outline",
       color: "#01bdab",
@@ -349,7 +349,7 @@ const Section5 = () => {
   ];
 
   return (
-    <Section src={wallpaper4} title={"리서치 및 조사[리서치]"}>
+    <Section src={wallpaper4} title={"프로젝트 개요"}>
       <Style>
         <MenuToggle onClick={handleToggle}>
           <IonIcon name="add-outline" />
