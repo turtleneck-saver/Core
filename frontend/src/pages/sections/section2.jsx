@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import applecat from "../../assets/apple-cat.gif";
 import intro from "../../assets/intro.mp4";
@@ -32,11 +32,27 @@ const Style = styled.div`
 
 const Section2 = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    video.loop = true; // 무한 반복 설정 (필요한 경우)
+    video.muted = true; // 소리 제거 (필요한 경우)
+    video.play().catch((error) => {
+      // 자동 재생 실패 처리 (브라우저 정책에 따라)
+      console.warn("자동 재생 실패:", error);
+    });
+
+    return () => {
+      // 컴포넌트 언마운트 시 비디오 정지
+      video.pause();
+    };
+  }, []);
 
   return (
     <section>
       <Style>
-        <video className="background" autoPlay loop muted>
+        <video className="background" ref={videoRef} autoPlay muted>
           <source src={intro} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
