@@ -84,6 +84,8 @@ const About = () => {
 
     deck.initialize();
 
+
+    
     deck.on("slidechanged", (event) => {
       const currentSlide = event.currentSlide;
 
