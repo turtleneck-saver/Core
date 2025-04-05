@@ -31,7 +31,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         await self.accept()
         self.time = None
         self.image = None
-        self.ip = self.scope['client'][0]
+        
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
         logger.info("클라이언트와 연결되었습니다.")
 
