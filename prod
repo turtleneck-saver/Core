@@ -27,6 +27,7 @@ runserver:
 	# supervisorctl reload
 	# supervisorctl update
 	supervisorctl start ai_app
+
 	poetry run uwsgi --ini uwsgi.ini
 	
  

@@ -17,3 +17,4 @@ class LogAdmin(admin.ModelAdmin):
     list_display = ('timestamp', 'status', 'description', 'ip')
     search_fields = ('description__description', 'status__status', 'ip__ip')
     list_filter = ('status', 'ip') 
+

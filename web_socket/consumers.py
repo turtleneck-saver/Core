@@ -9,6 +9,7 @@ import logging
 import datetime
 import joblib
 import os
+# from .utils import save_log
 
 NOSE = 0
 LEFT_EYE = 7
@@ -31,15 +32,23 @@ class VideoConsumer(AsyncWebsocketConsumer):
         # self.ip=self.scope["client"][0]
         self.time = None
         self.image = None
-
+        self.ip = self.scope['client'][0]
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
         logger.info("클라이언트와 연결되었습니다.")
+
         # await save_log(self.ip, 200, "클라이언트와 연결되었습니다.")
         
         
         
         
         
+
+
+    async def disconnect(self, close_code):
+        logger.info(f"클라이언트 {self.ip} 연결이 끊어졌습니다.")
+        await super().disconnect(close_code)
+    
+
     async def receive(self, text_data=None):
         try:
             result_data = {}
@@ -116,7 +125,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
                 else:
 
                     logger.info("포즈 또는 얼굴 감지 실패.")
-
+                    # await save_log(ip=self.ip, stutus="연결 끊김", description="클라이언트와의 연결이 끊어졌습니다.")
                 _, buffer = cv2.imencode(".webp", self.image)
                 self.image = base64.b64encode(buffer).decode("utf-8")
                 result_data["image"] = self.image
@@ -130,6 +139,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"error": "Invalid JSON"}))
         except BrokenPipeError:
             logger.warning("클라이언트와의 연결이 끊어졌습니다.")
+
         except Exception as e:
             logger.error(f"오류 발생: {str(e)}")
             await self.send(text_data=json.dumps({"error": str(e)}))
