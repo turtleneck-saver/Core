@@ -20,6 +20,6 @@ def scan_directory(directory):
                 format_code(os.path.join(root, file))
 
 
-# 사용 예시
+
 directory_path = '/app/'  # 스캔할 디렉터리 경로
 scan_directory(directory_path)
