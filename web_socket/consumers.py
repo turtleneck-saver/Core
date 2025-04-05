@@ -4,13 +4,13 @@ import numpy as np
 import cv2
 import mediapipe as mp
 from channels.generic.websocket import AsyncWebsocketConsumer
-from channels.db import database_sync_to_async
+# from .models import save_log
 import logging
 import datetime
 import joblib
 import os
 # from .utils import save_log
-from asgiref.sync import sync_to_async
+
 NOSE = 0
 LEFT_EYE = 7
 RIGHT_EYE = 8
@@ -29,16 +29,26 @@ class VideoConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         await self.accept()
+        # self.ip=self.scope["client"][0]
         self.time = None
         self.image = None
         self.ip = self.scope['client'][0]
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
         logger.info("클라이언트와 연결되었습니다.")
 
+        # await save_log(self.ip, 200, "클라이언트와 연결되었습니다.")
+        
+        
+        
+        
+        
+
+
     async def disconnect(self, close_code):
         logger.info(f"클라이언트 {self.ip} 연결이 끊어졌습니다.")
         await super().disconnect(close_code)
     
+
     async def receive(self, text_data=None):
         try:
             result_data = {}

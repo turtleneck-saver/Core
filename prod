@@ -23,10 +23,11 @@ npm-run:
 .PHONY: runserver
 runserver:
 	# supervisorctl stop celery_worker
-	# supervisorctl stop ai_app
+	supervisorctl stop ai_app
 	# supervisorctl reload
-	supervisorctl update
-	# supervisorctl start ai_app
+	# supervisorctl update
+	supervisorctl start ai_app
+
 	poetry run uwsgi --ini uwsgi.ini
 	
  
