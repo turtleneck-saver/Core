@@ -4,12 +4,14 @@ import numpy as np
 import cv2
 import mediapipe as mp
 from channels.generic.websocket import AsyncWebsocketConsumer
-# from .models import save_log
+import django
+django.setup()
+from .models import Log
 import logging
 import datetime
 import joblib
 import os
-# from .utils import save_log
+
 
 NOSE = 0
 LEFT_EYE = 7
@@ -36,7 +38,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
         logger.info("클라이언트와 연결되었습니다.")
 
-        # await save_log(self.ip, 200, "클라이언트와 연결되었습니다.")
+        # await save_log('self.ip', 200, "클라이언트와 연결되었습니다.")
         
         
         
