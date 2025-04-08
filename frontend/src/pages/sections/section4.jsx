@@ -23,13 +23,13 @@ const Style = styled.div`
 const Section4 = () => {
   return (
     <Section
-      src="http://210.109.82.36/assets/wallpaper2.mp4"
+      src="https://cdn-sv.p-e.kr/assets/wallpaper2.mp4"
       title={"문제 정의"}
     >
       <Style>
         <img
           className="info"
-          src="http://210.109.82.36/assets/landmarks.png"
+          src="https://cdn-sv.p-e.kr/assets/landmarks.png"
           alt="Landmarks"
         />
       </Style>

@@ -350,7 +350,7 @@ const Section5 = () => {
 
   return (
     <Section
-      src="http://210.109.82.36/assets/wallpaper4.mp4"
+      src="https://cdn-sv.p-e.kr/assets/wallpaper4.mp4"
       title={"프로젝트 개요"}
     >
       <Style>

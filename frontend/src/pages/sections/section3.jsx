@@ -48,13 +48,13 @@ const Section3 = () => {
         <h2 className="title">서론</h2>
         <img
           className="info"
-          src="http://210.109.82.36/assets/turtleneck.jpg"
+          src="https://cdn-sv.p-e.kr/assets/turtleneck.jpg"
           alt="Turtleneck"
           onClick={toggleModal}
         />
         <video className="background" autoPlay loop muted>
           <source
-            src="http://210.109.82.36/assets/wallpaper1.mp4"
+            src="https://cdn-sv.p-e.kr/assets/wallpaper1.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.
@@ -70,7 +70,7 @@ const Section3 = () => {
             <h2>거북목의 단계</h2>
             <img
               className="info"
-              src="http://210.109.82.36/assets/turtleneck-step.png"
+              src="https://cdn-sv.p-e.kr/assets/turtleneck-step.png"
               alt="Turtleneck Step"
             />
           </div>

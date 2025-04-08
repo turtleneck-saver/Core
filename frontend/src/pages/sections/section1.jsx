@@ -32,7 +32,7 @@ const Section1 = () => {
       <Style>
         <video className="background" autoPlay loop muted>
           <source
-            src="http://210.109.82.36/assets/turtleman.mp4"
+            src="https://cdn-sv.p-e.kr/assets/turtleman.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.

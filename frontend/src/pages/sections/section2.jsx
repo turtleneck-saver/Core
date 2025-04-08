@@ -54,7 +54,7 @@ const Section2 = () => {
       <Style>
         <video className="background" ref={videoRef} autoPlay muted>
           <source
-            src="http://210.109.82.36/assets/intro.mp4"
+            src="https://cdn-sv.p-e.kr/assets/intro.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.
@@ -77,7 +77,7 @@ const Section2 = () => {
               {item}
               {hoveredIndex === index && (
                 <img
-                  src="http://210.109.82.36/assets/apple-cat.gif"
+                  src="https://cdn-sv.p-e.kr/assets/apple-cat.gif"
                   alt="GIF"
                   className="gif"
                   style={{ display: "block" }}
