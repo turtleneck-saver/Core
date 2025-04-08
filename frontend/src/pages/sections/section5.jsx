@@ -187,7 +187,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Section from "../utils/section";
-// import wallpaper4 from "../../assets/wallpaper4.mp4";
+import wallpaper4 from "../../assets/wallpaper4.mp4";
 import { IonIcon } from "react-ion-icon";
 
 const Style = styled.div`
@@ -349,10 +349,7 @@ const Section5 = () => {
   ];
 
   return (
-    <Section
-      src="http://210.109.82.36/assets/wallpaper4.mp4"
-      title={"프로젝트 개요"}
-    >
+    <Section src={wallpaper4} title={"프로젝트 개요"}>
       <Style>
         <MenuToggle onClick={handleToggle}>
           <IonIcon name="add-outline" />

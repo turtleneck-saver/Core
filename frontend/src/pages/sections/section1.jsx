@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-// import turtleman from "../../assets/turtleman.mp4";
+import turtleman from "../../assets/turtleman.mp4";
 
 const Style = styled.div`
   display: flex;
@@ -31,10 +31,7 @@ const Section1 = () => {
     <section>
       <Style>
         <video className="background" autoPlay loop muted>
-          <source
-            src="http://210.109.82.36/assets/turtleman.mp4"
-            type="video/mp4"
-          />
+          <source src={turtleman} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <h2 className="title">인공지능종합설계</h2>
