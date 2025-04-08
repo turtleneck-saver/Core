@@ -84,27 +84,27 @@ const About = () => {
 
     deck.initialize();
 
-    deck.on("slidechanged", (event) => {
-      const currentSlide = event.currentSlide;
+    // deck.on("slidechanged", (event) => {
+    //   const currentSlide = event.currentSlide;
 
-      // 현재 슬라이드의 모든 비디오 태그 선택
-      const videos = currentSlide.querySelectorAll("video");
-      try {
-        // 모든 비디오에 대해 작업 수행
-        if (videos.length > 0) {
-          videos.forEach((video) => {
-            video.play(); // 현재 슬라이드에서 비디오 재생
-          });
-        } else {
-          const allVideos = document.querySelectorAll("video");
-          allVideos.forEach((video) => {
-            video.pause(); // 비디오가 없다면 모든 비디오 정지
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    });
+    //   // 현재 슬라이드의 모든 비디오 태그 선택
+    //   const videos = currentSlide.querySelectorAll("video");
+    //   try {
+    //     // 모든 비디오에 대해 작업 수행
+    //     if (videos.length > 0) {
+    //       videos.forEach((video) => {
+    //         video.play(); // 현재 슬라이드에서 비디오 재생
+    //       });
+    //     } else {
+    //       const allVideos = document.querySelectorAll("video");
+    //       allVideos.forEach((video) => {
+    //         video.pause(); // 비디오가 없다면 모든 비디오 정지
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // });
 
     return () => {
       deck.destroy(); // 컴포넌트 언마운트 시 정리
@@ -115,12 +115,12 @@ const About = () => {
     <Style>
       <div className="reveal">
         <div className="slides">
-          <Section1 />
+          {/* <Section1 /> */}
           <Section2 />
-          <Section3 />
+          {/* <Section3 />
           <Section4 />
           <Section5 />
-          <Section6 />
+          <Section6 /> */}
         </div>
       </div>
     </Style>
