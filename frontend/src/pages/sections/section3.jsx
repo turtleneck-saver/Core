@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import turtleneck from "../../assets/turtleneck.jpg";
-import turtleneckstep from "../../assets/turtleneck-step.png";
-import wallpaper1 from "../../assets/wallpaper1.mp4";
+// import turtleneck from "../../assets/turtleneck.jpg";
+// import turtleneckstep from "../../assets/turtleneck-step.png";
+// import wallpaper1 from "../../assets/wallpaper1.mp4";
 
 const Style = styled.div`
   .modal {
@@ -48,12 +48,15 @@ const Section3 = () => {
         <h2 className="title">서론</h2>
         <img
           className="info"
-          src={turtleneck}
+          src="https://cdn-sv.p-e.kr/assets/turtleneck.jpg"
           alt="Turtleneck"
           onClick={toggleModal}
         />
         <video className="background" autoPlay loop muted>
-          <source src={wallpaper1} type="video/mp4" />
+          <source
+            src="https://cdn-sv.p-e.kr/assets/wallpaper1.mp4"
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
         <div
@@ -65,7 +68,12 @@ const Section3 = () => {
               &times;
             </span>
             <h2>거북목의 단계</h2>
-            <img className="info" src={turtleneckstep} alt="Turtleneck Step" />
+
+            <img
+              className="info"
+              src="https://cdn-sv.p-e.kr/assets/turtleneck-step.png"
+              alt="Turtleneck Step"
+            />
           </div>
         </div>
       </Style>

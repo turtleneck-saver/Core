@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import wallpaper2 from "../../assets/wallpaper2.mp4";
-import landmarks from "../../assets/landmarks.png";
+// import wallpaper2 from "../../assets/wallpaper2.mp4";
+// import landmarks from "../../assets/landmarks.png";
 import Section from "../utils/section";
 const Style = styled.div`
   display: flex;
@@ -22,9 +22,16 @@ const Style = styled.div`
 
 const Section4 = () => {
   return (
-    <Section src={wallpaper2} title={"문제 정의"}>
+    <Section
+      src="https://cdn-sv.p-e.kr/assets/wallpaper2.mp4"
+      title={"문제 정의"}
+    >
       <Style>
-        <img className="info" src={landmarks} alt="Landmarks" />
+        <img
+          className="info"
+          src="https://cdn-sv.p-e.kr/assets/landmarks.png"
+          alt="Landmarks"
+        />
       </Style>
     </Section>
   );

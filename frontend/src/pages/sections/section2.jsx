@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import applecat from "../../assets/apple-cat.gif";
-import intro from "../../assets/intro.mp4";
+// import applecat from "../../assets/apple-cat.gif";
+// import intro from "../../assets/intro.mp4";
 
 const Style = styled.div`
   display: flex;
@@ -53,8 +53,10 @@ const Section2 = () => {
     <section>
       <Style>
         <video className="background" ref={videoRef} autoPlay muted>
-          <source src={intro} type="video/mp4" />
-          Your browser does not support the video tag.
+          <source
+            src="https://cdn-sv.p-e.kr/assets/intro.mp4"
+            type="video/mp4"
+          />
         </video>
         <h2 className="title">목차</h2>
         <ol>
@@ -74,7 +76,7 @@ const Section2 = () => {
               {item}
               {hoveredIndex === index && (
                 <img
-                  src={applecat}
+                  src="https://cdn-sv.p-e.kr/assets/apple-cat.gif"
                   alt="GIF"
                   className="gif"
                   style={{ display: "block" }}
