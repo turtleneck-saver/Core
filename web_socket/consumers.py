@@ -4,11 +4,14 @@ import numpy as np
 import cv2
 import mediapipe as mp
 from channels.generic.websocket import AsyncWebsocketConsumer
+import django
+django.setup()
+from .models import Log
 import logging
 import datetime
 import joblib
 import os
-from .utils import save_log
+
 
 NOSE = 0
 LEFT_EYE = 7
@@ -28,21 +31,14 @@ class VideoConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         await self.accept()
-        try:
-            headers = dict(self.scope["headers"])
-            ip=headers[b'x-real-ip'].decode('utf-8')
-            self.client_ip = ip
-        except Exception as e:
-            self.client_ip = "Unknown IP"
-            logger.error(f"클라이언트 IP를 가져오는 중 오류 발생: {e}")
-            
-        
-        
+        # self.ip=self.scope["client"][0]
         self.time = None
         self.image = None
+        
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
         logger.info("클라이언트와 연결되었습니다.")
-        await save_log(self.client_ip, 200, "클라이언트와 연결되었습니다.")
+
+        # await save_log('self.ip', 200, "클라이언트와 연결되었습니다.")
         
         
         
