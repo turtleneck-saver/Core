@@ -1,10 +1,13 @@
 <div align="center">
 
-<img src="image.png" width="400"/>
+<video style="border-radius: 1em; width:60%" autoPlay loop muted>
+  <source src="https://cdn-sv.p-e.kr/assets/turtleman.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ### 거북목 방지 프로젝트 🖍️
 
-[<img src="https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white" />](https://github.com/creepereye1204/turtleneck-saver) [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/release-v1.0.0-ㅎㄱㄷ두?style=flat&logo=google-chrome&logoColor=white" />](https://github.com/creepereye1204/turtleneck-saver/tags)
+[<img src="https://img.shields.io/badge/-readme.md-important?style=flat&logo=google-chrome&logoColor=white" />](https://github.com/creepereye1204/turtleneck-saver) [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=white" />]() [<img src="https://img.shields.io/badge/release-v2.0.0-ㅎㄱㄷ두?style=flat&logo=google-chrome&logoColor=white" />](https://github.com/creepereye1204/turtleneck-saver/tags)
 <br/> [<img src="https://img.shields.io/badge/프로젝트 기간-2024.9.12~2025.6.23-fab2ac?style=flat&logo=&logoColor=white" />]()
 
 </div>
@@ -20,10 +23,22 @@
 ## 🤖 초기 설정
 
 ```bash
-
+docker pull creepereye/turtleneck-saver:0.1
 ```
 
-- 학교 인터넷만 아니면 1분이면 다운됩니다.
+### 💾 Versions
+
+| <img src="https://user-images.githubusercontent.com/55467050/137045584-9bfa3e0f-eafa-49b2-b10a-6cd8bb753e66.png" alt="DRF" width="16px" height="16px" /> DRF | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="MEDIAPIPE" width="16px" height="16px" /> MEDIAPIPE | <img src="SKITLEARN.webp" alt="SKITLEARN" width="16px" height="16px" /> SKITLEARN | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="REACT" width="16px" height="16px" /> REACT | 🐳 Docker | ⚙️ Nginx | 🚀 Uwsgi | ⚡ Daphne | 🐘 POSTGRESQL |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------: | :------: | :------: | :-------: | :-----------: |
+|                                                                            3.12+                                                                             |                                                                                   0.8+                                                                                   |                                       1.0+                                        |                                                                             17.0.2+                                                                              | 20.10.x+  |  1.21+   |  2.0.1+  |  3.0.2+   |      13+      |
+
+<br/>
+
+## 💻 호환 브라우저
+
+| <img src="https://user-images.githubusercontent.com/55467050/137036906-a6c0f879-5b51-49d3-8e02-d01994f64d18.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/55467050/137036911-ccb70714-15fc-46fb-a074-19bb769727e9.png" alt="IE" width="16px" height="16px" /> Internet Explorer | <img src="https://user-images.githubusercontent.com/55467050/137036913-033a988f-b9c9-4980-8540-5994cfa7e465.jpg" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/55467050/137036914-1a1f080e-9fb3-4b29-a143-517be979e78f.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/55467050/137036916-91328771-5dd5-41fb-a842-8562db3c480c.png" alt="Firefox" width="16px" height="16px" /> Firefox |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                                Yes                                                                                 |                                                                                    11+                                                                                    |                                                                              Yes                                                                               |                                                                                Yes                                                                                 |                                                                                 Yes                                                                                  |
 
 ## 📝 소개
 
@@ -291,18 +306,6 @@ edges_image = PIL.Image.fromarray(edges.astype(np.uint8))
 ```bash
 docker pull creepereye/turtleneck-saver:0.1
 ```
-
-| <img src="https://user-images.githubusercontent.com/55467050/137036906-a6c0f879-5b51-49d3-8e02-d01994f64d18.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/55467050/137036911-ccb70714-15fc-46fb-a074-19bb769727e9.png" alt="IE" width="16px" height="16px" /> Internet Explorer | <img src="https://user-images.githubusercontent.com/55467050/137036913-033a988f-b9c9-4980-8540-5994cfa7e465.jpg" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/55467050/137036914-1a1f080e-9fb3-4b29-a143-517be979e78f.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/55467050/137036916-91328771-5dd5-41fb-a842-8562db3c480c.png" alt="Firefox" width="16px" height="16px" /> Firefox |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|                                                                                Yes                                                                                 |                                                                                    11+                                                                                    |                                                                              Yes                                                                               |                                                                                Yes                                                                                 |                                                                                 Yes                                                                                  |
-
-<h3> 💾 Versions</h3>
-
-| <img src="https://user-images.githubusercontent.com/55467050/137045584-9bfa3e0f-eafa-49b2-b10a-6cd8bb753e66.png" alt="Pytorch" width="16px" height="16px" /> Pytorch | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="react" width="16px" height="16px" /> React | <img src="https://user-images.githubusercontent.com/55467050/137045575-88aa70a8-3c3d-46d4-b975-d43ffc7f1891.png" alt="Django" width="16px" height="16px" /> Django | 🍃 Mongo DB | 🐳 Docker | Ⓜ️ MUI |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------: | :-------: | :----: |
-|                                                                                1.9.0+                                                                                |                                                                             17.0.2+                                                                              |                                                                               3.0.7+                                                                               |    4.4+     | 20.10.x+  | 5.0.1+ |
-
-<br/>
 
 ## 스킬 아이콘 출처
 
