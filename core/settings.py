@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     "web_socket",
     "django_celery_beat",
     "django_celery_results",
+    'django_redis',  # django_redis 추가
 ]
 
 MIDDLEWARE = [
@@ -185,12 +186,15 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Seoul"
 
 
-# Redis 세션 설정
-SESSION_ENGINE = "django_redis.sessions.RedisSessionStore"
-SESSION_REDIS = {
-    "host": "127.0.0.1",  # Redis 호스트
-    "port": 6379,  # Redis 포트
-    "db": 2,  # Redis 데이터베이스 (Celery와 다른 DB 사용)
-    "prefix": "session",  # 세션 키 접두사
-    "decode_responses": True,
+# redis cache and session config
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/2', # redis location
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
 }
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default' # cache alias name
