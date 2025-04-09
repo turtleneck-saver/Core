@@ -161,7 +161,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
@@ -183,3 +183,14 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Seoul"
+
+
+# Redis 세션 설정
+SESSION_ENGINE = "django_redis.sessions.RedisSessionStore"
+SESSION_REDIS = {
+    "host": "127.0.0.1",  # Redis 호스트
+    "port": 6379,  # Redis 포트
+    "db": 2,  # Redis 데이터베이스 (Celery와 다른 DB 사용)
+    "prefix": "session",  # 세션 키 접두사
+    "decode_responses": True,
+}
