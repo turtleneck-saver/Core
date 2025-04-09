@@ -1,9 +1,8 @@
 <div align="center">
 
-<video style="border-radius: 1em; width:60%" autoPlay loop muted>
-  <source src="https://cdn-sv.p-e.kr/assets/turtleman.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+<img style="border-radius: 1em; width:60%" src="image.png">
+ 
+</img>
 
 ### 거북목 방지 프로젝트 🖍️
 
@@ -28,9 +27,9 @@ docker pull creepereye/turtleneck-saver:0.1
 
 ### 💾 Versions
 
-| <img src="https://user-images.githubusercontent.com/55467050/137045584-9bfa3e0f-eafa-49b2-b10a-6cd8bb753e66.png" alt="DRF" width="16px" height="16px" /> DRF | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="MEDIAPIPE" width="16px" height="16px" /> MEDIAPIPE | <img src="SKITLEARN.webp" alt="SKITLEARN" width="16px" height="16px" /> SKITLEARN | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="REACT" width="16px" height="16px" /> REACT | 🐳 Docker | ⚙️ Nginx | 🚀 Uwsgi | ⚡ Daphne | 🐘 POSTGRESQL |
-| :----------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------: | :------: | :------: | :-------: | :-----------: |
-|                                                                            3.12+                                                                             |                                                                                   0.8+                                                                                   |                                       1.0+                                        |                                                                             17.0.2+                                                                              | 20.10.x+  |  1.21+   |  2.0.1+  |  3.0.2+   |      13+      |
+| <img src="drf.png" alt="DRF" width="16px" height="16px" /> DRF | <img src="mediapipe.png" alt="MEDIAPIPE" width="16px" height="16px" /> MEDIAPIPE | <img src="SKITLEARN.webp" alt="SKITLEARN" width="16px" height="16px" /> SKITLEARN | <img src="https://user-images.githubusercontent.com/55467050/137045573-6161819d-24b5-4130-9f96-d261eee4a723.png" alt="REACT" width="16px" height="16px" /> REACT | 🐳 Docker | ⚙️ Nginx | 🚀 Uwsgi | ⚡ Daphne | 🐘 POSTGRESQL |
+| :------------------------------------------------------------: | :------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------: | :------: | :------: | :-------: | :-----------: |
+|                             3.12+                              |                                       0.8+                                       |                                       1.0+                                        |                                                                             17.0.2+                                                                              | 20.10.x+  |  1.21+   |  2.0.1+  |  3.0.2+   |      13+      |
 
 <br/>
 
