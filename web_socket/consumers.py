@@ -42,6 +42,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
         self.image = None
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
         logger.info("클라이언트와 연결되었습니다.")
+        pid = os.getpid()  # 프로세스 ID 가져오기
+        logger.debug(f"WebSocket connected from process {pid}")
         await save_log(self.client_ip, 200, "클라이언트와 연결되었습니다.")
         
         
