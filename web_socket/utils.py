@@ -64,6 +64,10 @@ def collect_system_metrics(func):
             await sync_to_async(CPU_USAGE.set)(psutil.cpu_percent())
             await sync_to_async(MEM_USAGE.set)(psutil.virtual_memory().percent)
             await sync_to_async(HDD_USAGE.set)(psutil.disk_usage('/').percent)
+            logger.info(f"System metrics collected: CPU={psutil.cpu_percent()}%, "
+                        f"Memory={psutil.virtual_memory().percent}%, "
+                        f"HDD={psutil.disk_usage('/').percent}%")
+            logger.info(f"Task execution time: {duration:.4f} seconds")
     return wrapper
 
 

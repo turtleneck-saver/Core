@@ -37,7 +37,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             self.client_ip = "Unknown IP"
             logger.error(f"클라이언트 IP를 가져오는 중 오류 발생: {e}")
-        return VideoConsumer.user_count
+        
         
         
         self.time = None
@@ -47,7 +47,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         pid = os.getpid()  # 프로세스 ID 가져오기
         logger.debug(f"WebSocket connected from process {pid}")
         await save_log(self.client_ip, 200, "클라이언트와 연결되었습니다.")
-        
+        return VideoConsumer.user_count
         
         
         
