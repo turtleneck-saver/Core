@@ -4,7 +4,21 @@ django.setup()
 from channels.db import database_sync_to_async
 from .models import Log, Description,Status,Ip
 import logging
+import time
+import psutil
+import functools
+from prometheus_client import Summary, Gauge
+from asgiref.sync import sync_to_async
+TASK_TIME = Summary('time_per_process_task', 'Image prediction time')
+USER_COUNT = Gauge('user_count', 'Current using user count')
+CPU_USAGE = Gauge('cpu_usage_percent', 'CPU usage percentage')
+MEM_USAGE = Gauge('mem_usage_percent', 'Memory usage percentage')
+HDD_USAGE = Gauge('hdd_usage_percent', 'HDD usage percentage')
 logger = logging.getLogger("prod")
+
+
+
+
 @database_sync_to_async
 def save_log(ip: str, status: int, description: str):
     
@@ -36,3 +50,32 @@ def save_log(ip: str, status: int, description: str):
 
     except Exception as e:
         logger.error(f"로그 저장 실패: {e}")
+
+
+def collect_system_metrics(func):
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        start = time.time()
+        try:
+            await func(*args, **kwargs)
+        finally:
+            duration = time.time() - start
+            await sync_to_async(TASK_TIME.observe)(duration)
+            await sync_to_async(CPU_USAGE.set)(psutil.cpu_percent())
+            await sync_to_async(MEM_USAGE.set)(psutil.virtual_memory().percent)
+            await sync_to_async(HDD_USAGE.set)(psutil.disk_usage('/').percent)
+    return wrapper
+
+
+
+def collect_user_metrics(func):
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        try:
+            user_count = await func(*args, **kwargs)
+        except:
+            logger.error('server meltdown or communication error')
+        else:
+            await sync_to_async(USER_COUNT.set)(user_count)
+            
+    return wrapper

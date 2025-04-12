@@ -8,7 +8,7 @@ import logging
 import datetime
 import joblib
 import os
-from .utils import save_log
+from .utils import save_log, collect_system_metrics, collect_user_metrics
 
 NOSE = 0
 LEFT_EYE = 7
@@ -25,8 +25,10 @@ mp_face_mesh = mp.solutions.face_mesh
 
 
 class VideoConsumer(AsyncWebsocketConsumer):
-
+    user_count=0
+    @collect_user_metrics
     async def connect(self):
+        VideoConsumer.user_count += 1
         await self.accept()
         try:
             headers = dict(self.scope["headers"])
@@ -35,7 +37,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             self.client_ip = "Unknown IP"
             logger.error(f"클라이언트 IP를 가져오는 중 오류 발생: {e}")
-            
+        return VideoConsumer.user_count
         
         
         self.time = None
@@ -51,12 +53,15 @@ class VideoConsumer(AsyncWebsocketConsumer):
         
         
 
-
+    @collect_user_metrics
     async def disconnect(self, close_code):
+        VideoConsumer.user_count -= 1
         logger.info(f"클라이언트 {self.ip} 연결이 끊어졌습니다.")
         await super().disconnect(close_code)
+        return VideoConsumer.user_count
     
 
+    @collect_system_metrics
     async def receive(self, text_data=None):
         try:
             result_data = {}
