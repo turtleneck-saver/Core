@@ -56,7 +56,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
     @collect_user_metrics
     async def disconnect(self, close_code):
         VideoConsumer.user_count -= 1
-        logger.info(f"클라이언트 {self.ip} 연결이 끊어졌습니다.")
+        logger.info(f"클라이언트 {self.client_ip} 연결이 끊어졌습니다.")
         await super().disconnect(close_code)
         return VideoConsumer.user_count
     

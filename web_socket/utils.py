@@ -77,9 +77,8 @@ def collect_user_metrics(func):
     async def wrapper(*args, **kwargs):
         try:
             user_count = await func(*args, **kwargs)
-        except:
-            logger.error('server meltdown or communication error')
-        else:
             await sync_to_async(USER_COUNT.set)(user_count)
-            
+        except Exception as e:
+            logger.error(f"Error in user metrics collection: {e}")
+            logger.error('server meltdown or communication error')            
     return wrapper
