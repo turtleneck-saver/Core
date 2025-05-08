@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import styled from "styled-components";
+import Webcam from "react-webcam"; // react-webcam 임포트
 
 const Style = styled.div`
   .frame {
@@ -14,8 +15,7 @@ const Style = styled.div`
 
 const Video = () => {
   const socket = useRef(null);
-  const camera = useRef(null);
-  const canvas = useRef(null);
+  const webcamRef = useRef(null); // Webcam 컴포넌트의 ref
   const time = useRef(new Date());
   const [frame, setFrame] = useState(null);
 
@@ -26,14 +26,21 @@ const Video = () => {
 
   useEffect(() => {
     startWebSocket();
-  }, []);
+    const intervalId = setInterval(() => {
+      captureFrame(); // 주기적으로 프레임 캡처
+    }, TIMER);
+
+    return () => {
+      if (socket.current) socket.current.close();
+      clearInterval(intervalId);
+    };
+  }, []); // 빈 배열은 컴포넌트 마운트 시 한 번만 실행
 
   const startWebSocket = () => {
     socket.current = new WebSocket("wss://ai-app.p-e.kr/streaming/video");
 
-    socket.current.onopen = async () => {
+    socket.current.onopen = () => {
       console.log("WebSocket opened");
-      await startWebCam();
     };
 
     socket.current.onmessage = (event) => {
@@ -51,76 +58,52 @@ const Video = () => {
     socket.current.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
-
-    return () => {
-      if (socket.current) socket.current.close();
-    };
   };
 
-  const startWebCam = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: WIDTH },
-          height: { ideal: HEIGHT },
-          frameRate: { ideal: FPS },
-        },
+  // react-webcam의 getScreenshot 함수를 이용하여 이미지 캡처
+  const captureFrame = useCallback(() => {
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot({
+        width: WIDTH,
+        height: HEIGHT,
       });
-      camera.current.srcObject = stream;
-      camera.current.play();
 
-      const ctx = canvas.current.getContext("2d");
+      if (imageSrc) {
+        // getScreenshot은 base64 데이터 URL을 반환
+        const base64Image = imageSrc; // 'data:image/webp;base64,' 접두사 제거
 
-      const intervalId = setInterval(() => {
-        ctx.drawImage(
-          camera.current,
-          0,
-          0,
-          canvas.current.width,
-          canvas.current.height
-        );
-
-        canvas.current.toBlob(async (blob) => {
-          if (blob) {
-            const image = await blobToBase64(blob);
-            const time = new Date().toISOString();
-            const jsonData = {
-              image: image,
-              time: time,
-            };
-            if (
-              socket.current &&
-              socket.current.readyState === WebSocket.OPEN
-            ) {
-              socket.current.send(JSON.stringify(jsonData));
-            }
-            console.log("프레임 캡처됨!", image);
-          }
-        }, "image/webp");
-      }, TIMER);
-
-      return () => clearInterval(intervalId);
-    } catch (error) {
-      console.error("Error starting webcam:", error);
+        const currentTime = new Date().toISOString();
+        const jsonData = {
+          image: base64Image,
+          time: currentTime,
+        };
+        if (socket.current && socket.current.readyState === WebSocket.OPEN) {
+          socket.current.send(JSON.stringify(jsonData));
+        }
+        console.log("프레임 캡처됨!");
+      }
     }
-  };
-
-  const blobToBase64 = (blob) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  };
+  }, [webcamRef, WIDTH, HEIGHT, socket]); // 종속성 배열에 webcamRef, WIDTH, HEIGHT, socket 추가
 
   return (
     <Style width={WIDTH} height={HEIGHT}>
       <h1>Webcam Stream</h1>
-      <video ref={camera} className="frame" autoPlay />
-      <canvas ref={canvas} className="frame" />
+      {/* Webcam 컴포넌트 사용 */}
+      <Webcam
+        audio={false} // 오디오 사용 여부
+        ref={webcamRef}
+        screenshotFormat="image/webp" // 캡처 이미지 포맷
+        width={WIDTH}
+        height={HEIGHT}
+        videoConstraints={{
+          // 비디오 제약 조건 설정
+          width: WIDTH,
+          height: HEIGHT,
+          frameRate: FPS,
+        }}
+        className="frame visible" // 스타일 유지를 위해 클래스 적용
+      />
+
       {frame && (
         <img
           src={frame}
