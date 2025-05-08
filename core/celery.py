@@ -9,6 +9,7 @@ os.environ.setdefault(
     "core.settings",
 )
 
+
 app = Celery("core")
 
 # 여기서 문자열을 사용하면 작업자가 구성 개체를 하위 프로세스에 직렬화할 필요가 없습니다.
@@ -17,7 +18,12 @@ app.config_from_object(
     "django.conf:settings",
     namespace="CELERY",
 )
-
+app.conf.beat_schedule = {
+    'test-every-second': {
+        'task': 'api.tasks.test_task',
+        'schedule': 3.0  # 1초마다 실행
+    },
+}
 # 등록된 django apps 내부의 모든 task 모듈을 찾습니다.
 
 app.autodiscover_tasks()
