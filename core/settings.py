@@ -187,6 +187,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Seoul"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 
 # redis cache and session config

@@ -26,7 +26,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|png|jpg|gif|cur)$/, // 비디오 및 오디오 파일 처리 규칙
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac|png|jpg|gif|cur|wasm)$/, // 비디오 및 오디오 파일 처리 규칙
         use: [
           {
             loader: "file-loader", // 파일 로더 사용
