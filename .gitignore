@@ -129,3 +129,4 @@ static/admin/css/forms.css
 *.dir
 *.bak
 *.bat
+*.dat
