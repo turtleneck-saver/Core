@@ -194,11 +194,11 @@ CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/2', # redis location
+        'LOCATION': 'redis://localhost:6379/2',  # redis location
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
 }
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default' # cache alias name
+SESSION_CACHE_ALIAS = 'default'  # cache alias name
