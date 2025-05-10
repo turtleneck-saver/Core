@@ -1,14 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import styled from "styled-components";
-import Webcam from "react-webcam"; // react-webcam 임포트
-
-// Emscripten이 생성한 process_image.js 파일이 HTML <head> 태그 등에
-// <script src="process_image.js"></script> 형태로 이미 로드되어 있고,
-// 전역 'Module' 객체를 노출한다고 가정합니다.
-// 이 스크립트는 process_image.wasm 파일도 로드합니다.
+import Webcam from "react-webcam";
 
 const Style = styled.div`
-  /* .frame 스타일 수정 - display: none; 제거 */
   .frame {
     /* display: none;  // 이 줄을 제거하여 기본적으로 보이도록 함 */
     width: ${(props) => props.width}px;
@@ -17,6 +11,9 @@ const Style = styled.div`
   /* .visible 스타일은 그대로 유지하여 display: block을 강제 적용 */
   .visible {
     display: block !important;
+  }
+  .not-visible {
+    position: fixed !important;
   }
 
   /* Input 필드 스타일 (이전과 동일) */
@@ -360,7 +357,6 @@ const Video = () => {
       {/* 원본 웹캠 화면 및 처리된 결과를 나란히 표시할 컨테이너 */}
       <div className="video-container">
         <div className="video-item">
-          <h2>원본 웹캠 스트림</h2>
           {/* Webcam 컴포넌트 - 이제 화면에 표시됩니다 */}
           <Webcam
             audio={false}
@@ -373,7 +369,7 @@ const Video = () => {
               height: HEIGHT,
               frameRate: FPS,
             }}
-            className="frame visible" // 이제 보이도록 visible 클래스 유지
+            className="frame not-visible" // 이제 보이도록 visible 클래스 유지
             // style={{ position: 'absolute', left: '-9999px' }} // 이 스타일을 제거합니다.
             // onUserMedia={handleUserMedia} // 스트림 준비 콜백 (선택 사항)
           />
