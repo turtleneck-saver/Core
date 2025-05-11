@@ -25,21 +25,20 @@ mp_face_mesh = mp.solutions.face_mesh
 
 
 class VideoConsumer(AsyncWebsocketConsumer):
-    user_count=0
+    user_count = 0
+
     @collect_user_metrics
     async def connect(self):
         VideoConsumer.user_count += 1
         await self.accept()
         try:
             headers = dict(self.scope["headers"])
-            ip=headers[b'x-real-ip'].decode('utf-8')
+            ip = headers[b'x-real-ip'].decode('utf-8')
             self.client_ip = ip
         except Exception as e:
             self.client_ip = "Unknown IP"
             logger.error(f"클라이언트 IP를 가져오는 중 오류 발생: {e}")
-        
-        
-        
+
         self.time = None
         self.image = None
         self.model = joblib.load("./web_socket/random_forest_model.pkl")
@@ -48,10 +47,6 @@ class VideoConsumer(AsyncWebsocketConsumer):
         logger.debug(f"WebSocket connected from process {pid}")
         await save_log(self.client_ip, 200, "클라이언트와 연결되었습니다.")
         return VideoConsumer.user_count
-        
-        
-        
-        
 
     @collect_user_metrics
     async def disconnect(self, close_code):
@@ -59,7 +54,6 @@ class VideoConsumer(AsyncWebsocketConsumer):
         logger.info(f"클라이언트 {self.client_ip} 연결이 끊어졌습니다.")
         await super().disconnect(close_code)
         return VideoConsumer.user_count
-    
 
     @collect_system_metrics
     async def receive(self, text_data=None):
@@ -99,7 +93,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
                     )
                     face_landmarks = face_results.multi_face_landmarks[0]
 
-                    chin_landmark = self._change_to_np(face_landmarks.landmark[CHIN])
+                    chin_landmark = self._change_to_np(
+                        face_landmarks.landmark[CHIN])
                     nose_landmark = self._change_to_np(
                         pose_results.pose_landmarks.landmark[NOSE]
                     )
@@ -120,7 +115,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
                     ) / 2
                     left_frame_landmark = np.array([0, chin_landmark[1]])
                     h, w, _ = self.image.shape
-                    cx, cy = int(chin_landmark[0] * w), int(chin_landmark[1] * h)
+                    cx, cy = int(chin_landmark[0] *
+                                 w), int(chin_landmark[1] * h)
                     cv2.circle(self.image, (cx, cy), 5, (255, 0, 0), -1)
 
                     results = self._preprocess(
@@ -235,7 +231,8 @@ class VideoConsumer(AsyncWebsocketConsumer):
     @change_to_vector
     def _calculate_angle(self, AB, AC=None):
         if AC is not None:
-            cos_theta = np.dot(AB, AC) / (np.linalg.norm(AB) * np.linalg.norm(AC))
+            cos_theta = np.dot(AB, AC) / (np.linalg.norm(AB)
+                                          * np.linalg.norm(AC))
             theta = np.arccos(cos_theta)
 
         else:

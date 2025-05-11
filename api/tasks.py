@@ -45,8 +45,8 @@ def test_task():
     finally:
         # Push metrics to Pushgateway
         try:
-            push_to_gateway(PUSHGATEWAY_ADDRESS,
-                            job='celery_tasks', registry=registry)
+            # push_to_gateway(PUSHGATEWAY_ADDRESS,
+            #                 job='celery_tasks', registry=registry)
             logger.info(
                 f"Prometheus metrics pushed to Pushgateway for instance {INSTANCE_ID}")
         except Exception as e:
