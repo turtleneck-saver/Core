@@ -1,6 +1,6 @@
 import os
 from celery import Celery
-from celery.schedules import crontab
+# from celery.schedules import crontab
 
 # 이 부분은 'celery' program 구동을 위한 Default Django settings module을 setting합니다.
 # 이 줄은 필요하지 않지만 항상 설정 모듈을 셀러리 프로그램으로 전달하는 것을 방지합니다. 앱 인스턴스를 생성하기 전에 다음 작업을 수행해야 합니다.
