@@ -10,6 +10,7 @@ import Section3 from "./sections/section3";
 import Section4 from "./sections/section4";
 import Section5 from "./sections/section5";
 import Section6 from "./sections/section6";
+import Section7 from "./sections/section7";
 const Style = styled.div`
   * {
     cursor: url(${pikachu}), auto !important;
@@ -121,6 +122,7 @@ const About = () => {
           <Section4 />
           <Section5 />
           <Section6 />
+          <Section7 />
         </div>
       </div>
     </Style>
