@@ -2,11 +2,6 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import styled from "styled-components";
 import Webcam from "react-webcam"; // react-webcam 임포트
 
-// Emscripten이 생성한 process_image.js 파일이 HTML <head> 태그 등에
-// <script src="process_image.js"></script> 형태로 이미 로드되어 있고,
-// 전역 'Module' 객체를 노출한다고 가정합니다.
-// 이 스크립트는 process_image.wasm 파일도 로드합니다.
-
 const Style = styled.div`
   /* .frame 스타일 수정 - display: none; 제거 */
   .frame {
@@ -47,8 +42,8 @@ const Video = () => {
   const time = useRef(new Date());
   const [frame, setFrame] = useState(null); // 서버에서 받은 처리된 프레임을 표시하기 위한 state
 
-  const WIDTH = 720;
-  const HEIGHT = 360;
+  const WIDTH = 360;
+  const HEIGHT = 180;
   const FPS = 1; // 프레임 전송 속도
   const TIMER = 1000 / FPS; // setInterval 간격 (ms)
 
@@ -293,11 +288,8 @@ const Video = () => {
         };
 
         socket.current.send(JSON.stringify(jsonData));
-        // console.log("Processed frame sent!");
-      } else {
-        // console.warn("WebSocket not open. Could not send processed frame."); // 자주 출력될 수 있으므로 주석 처리
       }
-    }; // --- End img.onload ---
+    };
 
     // 이미지 로드 실패 시 에러 처리
     img.onerror = (e) => {
@@ -317,13 +309,6 @@ const Video = () => {
     socket,
     TIMER,
   ]);
-  // useCallback 종속성 배열에 필요한 Ref와 상수들 포함. TIMER 추가.
-
-  // Webcam 스트림 준비가 완료되었을 때 호출될 콜백 (선택 사항)
-  // const handleUserMedia = (stream) => {
-  //     console.log("Webcam stream ready:", stream);
-  //     // 스트림이 준비된 후에 프레임 캡처 인터벌을 시작할 수 있음 (현재는 WASM 초기화 완료 시 시작)
-  // };
 
   return (
     <Style width={WIDTH} height={HEIGHT}>

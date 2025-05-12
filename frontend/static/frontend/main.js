@@ -222,9 +222,8 @@
     display: inline-block; /* span 태그를 inline-block으로 변경 */
   }
 `,ga=()=>{const[e,t]=(0,r.useState)(!1);return r.createElement(ca,{src:"https://cdn-sv.p-e.kr/assets/wallpaper4.mp4",title:"프로젝트 개요"},r.createElement(fa,null,r.createElement(ha,{onClick:()=>{t(!e)}},r.createElement(pa.i,{name:"add-outline"})),r.createElement(va,{className:e?"active":""},[{icon:"home-outline",color:"#ff2972",label:"가설 검증",url:"/"},{icon:"settings-outline",color:"#fee800",label:"개발 방법론",url:"https://turtleneck-preventor.atlassian.net/jira/software/projects/SCRUM/boards/1/timeline"},{icon:"mail-outline",color:"#04fc43",label:"부하 테스트",url:"https://locust.io/"},{icon:"key-outline",color:"#fe00f1",label:"모니터링",url:"https://velog.io/@kgh2120/%ED%94%84%EB%A1%9C%EB%A9%94%ED%85%8C%EC%9A%B0%EC%8A%A4%EC%99%80-%EA%B7%B8%EB%9D%BC%ED%8C%8C%EB%82%98"},{icon:"camera-outline",color:"#00b0fe",label:"깃 전략",url:"https://github.com/creepereye1204/turtleneck-saver"},{icon:"game-controller-outline",color:"#fea600",label:"배포 방식",url:"https://hudi.blog/zero-downtime-deployment/"},{icon:"person-outline",color:"#a529ff",label:"피드백",url:"/user"},{icon:"videocam-outline",color:"#01bdab",label:"아키텍쳐",url:"https://github.com/creepereye1204/turtleneck-saver"}].map(((e,t)=>r.createElement("li",{key:t,style:{"--i":t,"--clr":e.color}},r.createElement("a",{href:e.url,target:"_blank",rel:"noopener noreferrer"},r.createElement(pa.i,{name:e.icon},r.createElement("span",{className:"icon-label"},e.label)))))))))},ma=jn.div``,ba=()=>r.createElement(ca,{src:"https://cdn-sv.p-e.kr/assets/wallpaper5.mp4",title:"기존 프로젝트와의 차별점"},r.createElement(ma,null,r.createElement("img",{className:"info",src:"https://cdn-sv.p-e.kr/assets/different.png",alt:"different"}))),ya=jn.div`
-  /* Section7 컴포넌트 내부 요소들을 위한 컨테이너 스타일 */
-  display: flex; /* 자식 요소들을 Flexbox로 배치 */
-  flex-direction: column; /* 요소들을 세로 방향으로 정렬 */
+  display: flex;
+  flex-direction: column;
   align-items: center; /* 가로축 중앙 정렬 */
   gap: 20px; /* 자식 요소들 사이에 간격 추가 */
   padding: 20px; /* 내부 여백 추가 */
@@ -232,7 +231,9 @@
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 텍스트 그림자 추가 */
   z-index: 1; /* 배경 영상 위에 오도록 z-index 설정 */
   position: relative; /* 자식 요소의 absolute/relative 기준 설정 */
-
+  p {
+    font-size: 0.4em;
+  }
   h3 {
     /* 준비중 메시지 스타일 */
     color: #fff;
@@ -244,11 +245,6 @@
     flex-direction: column;
     align-items: center;
     gap: 15px; /* 내부 요소 간격 */
-  }
-
-  p {
-    /* WASM 로드 상태 메시지 스타일 */
-    margin: 0; /* 기본 마진 제거 */
   }
 
   /* 파일 선택 UI (label과 input) 스타일 */
@@ -303,7 +299,7 @@
 
   /* 버튼 스타일 */
   button {
-    padding: 8px 15px;
+    padding: 8px;
     border-radius: 5px;
     border: none;
     background-color: #007bff; /* 기본 버튼 색상 */
@@ -320,7 +316,9 @@
       cursor: not-allowed; /* 비활성화 시 커서 */
     }
   }
-
+  .input {
+    font-size: 0.6em;
+  }
   /* 파일 선택 label 안의 button 스타일 (label 스타일을 따르도록) */
   label button {
     background: none; /* label의 배경색 제거 */
@@ -352,8 +350,7 @@
   }
 
   .canvas-item h2 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    font-size: 0.5em;
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   }
@@ -365,13 +362,18 @@
     height: auto; /* 비율 유지 */
     display: block; /* inline 요소의 하단 공백 제거 */
   }
+  .input-container {
+    display: grid;
 
+    justify-content: space-between; /* 요소들 사이에 공간을 균등하게 배치 */
+    align-items: center;
+  }
   #timeResults {
     margin-top: 20px;
     font-size: 1.1em;
     color: #fff;
   }
-`,wa=()=>{const e=(0,r.useRef)(null),[t,n]=(0,r.useState)(!1),[a,i]=(0,r.useState)(null),[o,l]=(0,r.useState)(5),[s,c]=(0,r.useState)(1.5),u=(0,r.useRef)(null),d=(0,r.useRef)(null),p=(0,r.useRef)(null);return(0,r.useEffect)((()=>(console.log("useEffect: WASM 초기화 로직 실행"),"undefined"!=typeof Module?Module.calledRun?(console.log("WASM 런타임 이미 초기화됨."),e.current={_malloc:Module._malloc,_free:Module._free,HEAPU8:Module.HEAPU8,_processImage:Module._processImage},n(!0)):Module.onRuntimeInitialized=()=>{console.log("WASM 런타임 초기화 완료!"),e.current={_malloc:Module._malloc,_free:Module._free,HEAPU8:Module.HEAPU8,_processImage:Module._processImage},n(!0)}:console.error("Emscripten Module 객체를 찾을 수 없습니다. public/index.html에 process_image.js 스크립트 태그가 있는지 확인하세요."),()=>{console.log("useEffect cleanup 실행")})),[]),r.createElement(ca,{src:"https://cdn-sv.p-e.kr/assets/wallpaper6.mp4",title:"WASM VS JS"},r.createElement(ya,null,r.createElement("p",null,"속도 비교"),t?r.createElement("div",null,r.createElement("label",{htmlFor:"imageInput"},r.createElement("input",{type:"file",id:"imageInput",accept:"image/*",style:{display:"none"},onChange:e=>{const t=e.target.files[0];if(t){const e=new FileReader;e.onload=e=>{const t=new Image;t.onload=()=>{const e=document.createElement("canvas");e.width=t.width,e.height=t.height;const n=e.getContext("2d");n.drawImage(t,0,0,t.width,t.height);const r=n.getImageData(0,0,t.width,t.height);i(r);const a=u.current;a&&(a.width=t.width,a.height=t.height,a.getContext("2d").drawImage(t,0,0));const o=d.current;o&&(o.width=t.width,o.height=t.height,o.getContext("2d").clearRect(0,0,t.width,t.height));const l=p.current;l&&(l.width=t.width,l.height=t.height,l.getContext("2d").clearRect(0,0,t.width,t.height))},t.src=e.target.result},e.readAsDataURL(t)}}}),r.createElement("span",null,"이미지 선택")),r.createElement("div",null,r.createElement("label",{htmlFor:"blurRadius"},"블러 반경 (Radius):"),r.createElement("input",{type:"number",id:"blurRadius",value:o,onChange:e=>l(parseInt(e.target.value,10)||0),min:"0",max:"50"}),r.createElement("label",{htmlFor:"sharpenAmount"},"선명화 강도 (Amount):"),r.createElement("input",{type:"number",id:"sharpenAmount",value:s,onChange:e=>c(parseFloat(e.target.value)||0),step:"0.1",min:"0"})),r.createElement("button",{id:"processButton",onClick:()=>{if(!t||!a)return void console.warn("WASM 모듈이 준비되지 않았거나 이미지가 로드되지 않았습니다.");console.log("속도 비교 시작...");const n=performance.now(),r=(({imageData:e,radius:t,amount:n})=>{const r=e.data,a=e.width,i=e.height,o=a*i,l=4*o,s=new Uint8ClampedArray(l);for(let e=0;e<i;++e)for(let n=0;n<a;++n){let o=0,l=0,c=0,u=0;for(let s=-t;s<=t;++s)for(let d=-t;d<=t;++d){const t=n+d,p=e+s;if(t>=0&&t<a&&p>=0&&p<i){const e=4*(p*a+t);o+=r[e],l+=r[e+1],c+=r[e+2],u++}}const d=4*(e*a+n);u>0?(s[d]=o/u,s[d+1]=l/u,s[d+2]=c/u,s[d+3]=r[d+3]):(s[d]=0,s[d+1]=0,s[d+2]=0,s[d+3]=r[d+3])}const c=new Uint8ClampedArray(l);for(let e=0;e<o;++e){const t=4*e,a=r[t],i=r[t+1],o=r[t+2],l=a+(a-s[t])*n,u=i+(i-s[t+1])*n,d=o+(o-s[t+2])*n;c[t]=l,c[t+1]=u,c[t+2]=d,c[t+3]=r[t+3]}return new ImageData(c,a,i)})({imageData:a,radius:o,amount:s}),i=performance.now()-n;console.log(`JavaScript 처리 시간: ${i} ms`);const l=performance.now(),c=(({imageData:e,wasmFunc:t,radius:n,amount:r})=>{if(!t||!t.current||!t.current._processImage)return console.warn("WASM 모듈이 아직 로드되지 않았거나 필요한 함수가 준비되지 않았습니다."),null;const{_malloc:a,_free:i,_processImage:o}=t.current;let l=t.current.HEAPU8;const s=e.data,c=e.width,u=e.height,d=s.length;let p=0,f=0;try{if(p=a(d),f=a(d),0===p||0===f)return console.error("WASM 메모리 할당에 실패했습니다. (inputPtr:",p,", outputPtr:",f,")"),0!==p&&i(p),0!==f&&i(f),null;l.set(s,p),o(p,f,c,u,n,r),l=t.current.HEAPU8;const e=l.slice(f,f+d),h=new Uint8ClampedArray(e);return i(p),i(f),new ImageData(h,c,u)}catch(e){return console.error("WASM 함수 실행 중 오류 발생:",e),0!==p&&i(p),0!==f&&i(f),null}})({imageData:a,wasmFunc:e,radius:o,amount:s}),u=performance.now()-l;console.log(`WASM 처리 시간: ${u} ms`);const f=d.current;f&&r&&f.getContext("2d").putImageData(r,0,0);const h=p.current;h&&c&&h.getContext("2d").putImageData(c,0,0)},disabled:!t||!a},"이미지 처리 시작"),r.createElement("div",{className:"canvas-container"},r.createElement("div",{className:"canvas-item"},r.createElement("h2",null,"원본 이미지"),r.createElement("canvas",{ref:u})),r.createElement("div",{className:"canvas-item"},r.createElement("h2",null,"WASM 처리 결과"),r.createElement("canvas",{ref:p})),r.createElement("div",{className:"canvas-item"},r.createElement("h2",null,"JavaScript 처리 결과"),r.createElement("canvas",{ref:d})))):r.createElement("h3",null,"WASM 모듈 준비중...")))},ka=jn.div`
+`,wa=()=>{const e=(0,r.useRef)(null),[t,n]=(0,r.useState)(null),[a,i]=(0,r.useState)(null),[o,l]=(0,r.useState)(null),[s,c]=(0,r.useState)(!1),[u,d]=(0,r.useState)(null),[p,f]=(0,r.useState)(5),[h,v]=(0,r.useState)(1.5),g=(0,r.useRef)(null),m=(0,r.useRef)(null),b=(0,r.useRef)(null);(0,r.useEffect)((()=>(console.log("useEffect: WASM 초기화 로직 실행"),"undefined"!=typeof Module?Module.calledRun?(console.log("WASM 런타임 이미 초기화됨."),e.current={_malloc:Module._malloc,_free:Module._free,HEAPU8:Module.HEAPU8,_processImage:Module._processImage},c(!0)):Module.onRuntimeInitialized=()=>{console.log("WASM 런타임 초기화 완료!"),e.current={_malloc:Module._malloc,_free:Module._free,HEAPU8:Module.HEAPU8,_processImage:Module._processImage},c(!0)}:console.error("Emscripten Module 객체를 찾을 수 없습니다. public/index.html에 process_image.js 스크립트 태그가 있는지 확인하세요."),()=>{console.log("useEffect cleanup 실행")})),[]);return r.createElement(ca,{src:"https://cdn-sv.p-e.kr/assets/wallpaper6.mp4",title:"WASM VS JS"},r.createElement(ya,null,s?r.createElement("div",null,r.createElement("div",{className:"input-container"},r.createElement("div",null,r.createElement("p",null,"블러 반경 (Radius):"),r.createElement("input",{type:"number",id:"blurRadius",value:p,onChange:e=>f(parseInt(e.target.value,10)||0),min:"0",max:"50"}),r.createElement("p",null,"선명화 강도 (Amount):"),r.createElement("input",{type:"number",id:"sharpenAmount",value:h,onChange:e=>v(parseFloat(e.target.value)||0),step:"0.1",min:"0"})),r.createElement("label",{htmlFor:"imageInput"},r.createElement("input",{type:"file",id:"imageInput",accept:"image/*",style:{display:"none"},onChange:e=>{const t=e.target.files[0];if(t){const e=new FileReader;e.onload=e=>{const t=new Image;t.onload=()=>{const e=document.createElement("canvas");e.width=t.width,e.height=t.height;const n=e.getContext("2d");n.drawImage(t,0,0,t.width,t.height);const r=n.getImageData(0,0,t.width,t.height);d(r);const a=g.current;a&&(a.width=t.width,a.height=t.height,a.getContext("2d").drawImage(t,0,0));const i=m.current;i&&(i.width=t.width,i.height=t.height,i.getContext("2d").clearRect(0,0,t.width,t.height));const o=b.current;o&&(o.width=t.width,o.height=t.height,o.getContext("2d").clearRect(0,0,t.width,t.height))},t.src=e.target.result},e.readAsDataURL(t)}}}),r.createElement("div",{className:"input",onDragOver:e=>{e.preventDefault()},onDragLeave:e=>{e.preventDefault()},onDrop:e=>{e.preventDefault();const t=e.dataTransfer.files;if(t&&t.length>0&&t[0].type.startsWith("image/")){(e=>{const t=new FileReader;t.onload=e=>{const t=new Image;t.onload=()=>{const e=document.createElement("canvas");e.width=t.width,e.height=t.height;const n=e.getContext("2d");n.drawImage(t,0,0,t.width,t.height);const r=n.getImageData(0,0,t.width,t.height);d(r);const a=g.current;a&&(a.width=t.width,a.height=t.height,a.getContext("2d").drawImage(t,0,0));const i=m.current;i&&(i.width=t.width,i.height=t.height,i.getContext("2d").clearRect(0,0,t.width,t.height));const o=b.current;o&&(o.width=t.width,o.height=t.height,o.getContext("2d").clearRect(0,0,t.width,t.height))},t.src=e.target.result},t.readAsDataURL(e)})(t[0])}}},"이미지를 선택하거나 여기에 드래그 앤 드롭 하세요")),r.createElement("button",{id:"processButton",onClick:()=>{if(!s||!u)return void console.warn("WASM 모듈이 준비되지 않았거나 이미지가 로드되지 않았습니다.");console.log("속도 비교 시작...");const t=performance.now(),r=(({imageData:e,radius:t,amount:n})=>{const r=e.data,a=e.width,i=e.height,o=a*i,l=4*o,s=new Uint8ClampedArray(l);for(let e=0;e<i;++e)for(let n=0;n<a;++n){let o=0,l=0,c=0,u=0;for(let s=-t;s<=t;++s)for(let d=-t;d<=t;++d){const t=n+d,p=e+s;if(t>=0&&t<a&&p>=0&&p<i){const e=4*(p*a+t);o+=r[e],l+=r[e+1],c+=r[e+2],u++}}const d=4*(e*a+n);u>0?(s[d]=o/u,s[d+1]=l/u,s[d+2]=c/u,s[d+3]=r[d+3]):(s[d]=0,s[d+1]=0,s[d+2]=0,s[d+3]=r[d+3])}const c=new Uint8ClampedArray(l);for(let e=0;e<o;++e){const t=4*e,a=r[t],i=r[t+1],o=r[t+2],l=a+(a-s[t])*n,u=i+(i-s[t+1])*n,d=o+(o-s[t+2])*n;c[t]=l,c[t+1]=u,c[t+2]=d,c[t+3]=r[t+3]}return new ImageData(c,a,i)})({imageData:u,radius:p,amount:h}),a=performance.now()-t;console.log(`JavaScript 처리 시간: ${a} ms`);const o=performance.now(),c=(({imageData:e,wasmFunc:t,radius:n,amount:r})=>{if(!t||!t.current||!t.current._processImage)return console.warn("WASM 모듈이 아직 로드되지 않았거나 필요한 함수가 준비되지 않았습니다."),null;const{_malloc:a,_free:i,_processImage:o}=t.current;let l=t.current.HEAPU8;const s=e.data,c=e.width,u=e.height,d=s.length;let p=0,f=0;try{if(p=a(d),f=a(d),0===p||0===f)return console.error("WASM 메모리 할당에 실패했습니다. (inputPtr:",p,", outputPtr:",f,")"),0!==p&&i(p),0!==f&&i(f),null;l.set(s,p),o(p,f,c,u,n,r),l=t.current.HEAPU8;const e=l.slice(f,f+d),h=new Uint8ClampedArray(e);return i(p),i(f),new ImageData(h,c,u)}catch(e){return console.error("WASM 함수 실행 중 오류 발생:",e),0!==p&&i(p),0!==f&&i(f),null}})({imageData:u,wasmFunc:e,radius:p,amount:h}),d=performance.now()-o;console.log(`WASM 처리 시간: ${d} ms`),i((d/1e3).toFixed(2)+":초"),n((a/1e3).toFixed(2)+":초"),l((a/d).toFixed(2)+":배 (속도)향상됨");const f=m.current;f&&r&&f.getContext("2d").putImageData(r,0,0);const v=b.current;v&&c&&v.getContext("2d").putImageData(c,0,0)},disabled:!s||!u},"이미지 처리 시작")),r.createElement("div",{className:"canvas-container"},r.createElement("div",{className:"canvas-item"},r.createElement("h2",null,"원본 이미지"),o&&r.createElement("p",null,o),r.createElement("canvas",{ref:g})),r.createElement("div",{className:"canvas-item"},r.createElement("h2",null,"WASM 처리 결과"),a&&r.createElement("p",null,a),r.createElement("canvas",{ref:b})),r.createElement("div",{className:"canvas-item"},r.createElement("h2",null,"JS 처리 결과"),t&&r.createElement("p",null,t),r.createElement("canvas",{ref:m})))):r.createElement("h3",null,"WASM 모듈 준비중...")))},ka=jn.div`
   * {
     cursor: url(${na}), auto !important;
   }
