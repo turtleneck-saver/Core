@@ -1,12 +1,11 @@
-import React, { useRef, useState, useEffect } from "react"; // useEffect, useState, useRef 임포트
+import React, { useRef, useState, useEffect } from "react";
 import Section from "../utils/section";
 import styled from "styled-components";
-import { preprocessWithJs, preprocessWithWasm, compare } from "../utils/funcs";
+import { preprocessWithJs, preprocessWithWasm } from "../utils/funcs";
 
 const Style = styled.div`
-  /* Section7 컴포넌트 내부 요소들을 위한 컨테이너 스타일 */
-  display: flex; /* 자식 요소들을 Flexbox로 배치 */
-  flex-direction: column; /* 요소들을 세로 방향으로 정렬 */
+  display: flex;
+  flex-direction: column;
   align-items: center; /* 가로축 중앙 정렬 */
   gap: 20px; /* 자식 요소들 사이에 간격 추가 */
   padding: 20px; /* 내부 여백 추가 */
@@ -14,7 +13,9 @@ const Style = styled.div`
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 텍스트 그림자 추가 */
   z-index: 1; /* 배경 영상 위에 오도록 z-index 설정 */
   position: relative; /* 자식 요소의 absolute/relative 기준 설정 */
-
+  p {
+    font-size: 0.4em;
+  }
   h3 {
     /* 준비중 메시지 스타일 */
     color: #fff;
@@ -26,11 +27,6 @@ const Style = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 15px; /* 내부 요소 간격 */
-  }
-
-  p {
-    /* WASM 로드 상태 메시지 스타일 */
-    margin: 0; /* 기본 마진 제거 */
   }
 
   /* 파일 선택 UI (label과 input) 스타일 */
@@ -85,7 +81,7 @@ const Style = styled.div`
 
   /* 버튼 스타일 */
   button {
-    padding: 8px 15px;
+    padding: 8px;
     border-radius: 5px;
     border: none;
     background-color: #007bff; /* 기본 버튼 색상 */
@@ -102,7 +98,9 @@ const Style = styled.div`
       cursor: not-allowed; /* 비활성화 시 커서 */
     }
   }
-
+  .input {
+    font-size: 0.6em;
+  }
   /* 파일 선택 label 안의 button 스타일 (label 스타일을 따르도록) */
   label button {
     background: none; /* label의 배경색 제거 */
@@ -134,8 +132,7 @@ const Style = styled.div`
   }
 
   .canvas-item h2 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
+    font-size: 0.5em;
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   }
@@ -147,7 +144,12 @@ const Style = styled.div`
     height: auto; /* 비율 유지 */
     display: block; /* inline 요소의 하단 공백 제거 */
   }
+  .input-container {
+    display: grid;
 
+    justify-content: space-between; /* 요소들 사이에 공간을 균등하게 배치 */
+    align-items: center;
+  }
   #timeResults {
     margin-top: 20px;
     font-size: 1.1em;
@@ -160,7 +162,9 @@ const Style = styled.div`
 
 const Section7 = () => {
   const wasmFunc = useRef(null);
-  // isWasmReady 상태와 상태 업데이트 함수 선언
+  const [jsTime, setJsTime] = useState(null);
+  const [wasmTime, setWasmTime] = useState(null);
+  const [improved, setImproved] = useState(null);
   const [isWasmReady, setIsWasmReady] = useState(false);
   const [loadedImageData, setLoadedImageData] = useState(null); // 이미지 데이터 상태
   const [blurRadius, setBlurRadius] = useState(5); // 블러 반경 상태
@@ -193,14 +197,14 @@ const Section7 = () => {
         // 런타임 초기화 콜백 설정
         Module.onRuntimeInitialized = () => {
           console.log("WASM 런타임 초기화 완료!");
-          // WASM 함수 및 메모리 뷰를 useRef에 저장
+
           wasmFunc.current = {
             _malloc: Module._malloc,
             _free: Module._free,
             HEAPU8: Module.HEAPU8,
             _processImage: Module._processImage,
           };
-          // 상태 업데이트: WASM 준비 완료
+
           setIsWasmReady(true);
         };
       }
@@ -208,19 +212,91 @@ const Section7 = () => {
       console.error(
         "Emscripten Module 객체를 찾을 수 없습니다. public/index.html에 process_image.js 스크립트 태그가 있는지 확인하세요."
       );
-      // WASM 로딩 실패 상태 처리 로직 추가 가능
     }
 
-    // 클린업 함수 (필요시)
     return () => {
       console.log("useEffect cleanup 실행");
-      // WASM 관련 정리 작업 (필요하다면)
     };
-  }, []); // 빈 의존성 배열: 컴포넌트 마운트 및 언마운트 시에만 실행
+  }, []);
+  // 드래그 중 기본 동작 방지
+  const handleDragOver = (event) => {
+    event.preventDefault(); // 기본 동작 (파일 열기) 방지
+    // 필요하다면 isDragging 상태를 true로 설정하여 시각적 피드백 제공
+    // setIsDragging(true);
+  };
 
-  // 이미지 파일 선택 핸들러 (이전 답변 코드 참조)
+  // 드래그 영역 벗어날 때 시각적 피드백 초기화 (선택 사항)
+  const handleDragLeave = (event) => {
+    event.preventDefault();
+    // 필요하다면 isDragging 상태를 false로 설정
+    // setIsDragging(false);
+  };
+
+  // 드롭 이벤트 처리
+  const handleDrop = (event) => {
+    event.preventDefault(); // 기본 동작 (파일 열기) 방지
+    // 필요하다면 isDragging 상태 초기화
+    // setIsDragging(false);
+
+    // 드롭된 파일 가져오기
+    const files = event.dataTransfer.files;
+
+    // 파일이 존재하고 이미지 파일인지 확인
+    if (files && files.length > 0 && files[0].type.startsWith("image/")) {
+      const file = files[0]; // 첫 번째 파일만 처리
+      // 기존의 handleImageChange 로직을 여기에 직접 구현하거나,
+      // 파일 객체를 인자로 받는 별도의 파일 처리 함수를 호출합니다.
+      // 여기서는 기존 handleImageChange를 활용하기 어렵기 때문에,
+      // handleImageChange 내부 로직을 별도의 함수로 분리하는 것이 좋습니다.
+
+      // 예시: 파일 처리 로직을 별도 함수 processFile로 분리
+      processFile(file);
+    }
+  };
+
+  // 파일 처리 로직을 담은 함수 (기존 handleImageChange 내부 로직 활용)
+  const processFile = (file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+        setLoadedImageData(imageData);
+
+        const originalCanvas = originalCanvasRef.current;
+        if (originalCanvas) {
+          originalCanvas.width = img.width;
+          originalCanvas.height = img.height;
+          const originalCtx = originalCanvas.getContext("2d");
+          originalCtx.drawImage(img, 0, 0);
+        }
+
+        const processedJsCanvas = processedJsCanvasRef.current;
+        if (processedJsCanvas) {
+          processedJsCanvas.width = img.width;
+          processedJsCanvas.height = img.height;
+          const ctx = processedJsCanvas.getContext("2d");
+          ctx.clearRect(0, 0, img.width, img.height);
+        }
+        const processedWasmCanvas = processedWasmCanvasRef.current;
+        if (processedWasmCanvas) {
+          processedWasmCanvas.width = img.width;
+          processedWasmCanvas.height = img.height;
+          const ctx = processedWasmCanvas.getContext("2d");
+          ctx.clearRect(0, 0, img.width, img.height);
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleImageChange = (event) => {
-    // ... 파일 읽고 ImageData 얻어서 setLoadedImageData 업데이트, 원본 캔버스에 그리는 로직 ...
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -294,7 +370,9 @@ const Section7 = () => {
     const endTimeWasm = performance.now();
     const timeWasm = endTimeWasm - startTimeWasm;
     console.log(`WASM 처리 시간: ${timeWasm} ms`);
-
+    setWasmTime((timeWasm / 1000).toFixed(2) + ":초");
+    setJsTime((timeJs / 1000).toFixed(2) + ":초");
+    setImproved((timeJs / timeWasm).toFixed(2) + ":배 (속도)향상됨");
     const processedJsCanvas = processedJsCanvasRef.current;
     if (processedJsCanvas && resultJs)
       processedJsCanvas.getContext("2d").putImageData(resultJs, 0, 0);
@@ -309,68 +387,79 @@ const Section7 = () => {
       title={"WASM VS JS"}
     >
       <Style>
-        <p>속도 비교</p>
-
         {!isWasmReady ? (
           <h3>WASM 모듈 준비중...</h3>
         ) : (
           <div>
-            <label htmlFor="imageInput">
-              <input
-                type="file"
-                id="imageInput"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
+            <div className="input-container">
+              <div>
+                <p>블러 반경 (Radius):</p>
+                <input
+                  type="number"
+                  id="blurRadius"
+                  value={blurRadius}
+                  onChange={(e) =>
+                    setBlurRadius(parseInt(e.target.value, 10) || 0)
+                  }
+                  min="0"
+                  max="50"
+                />
+                <p>선명화 강도 (Amount):</p>
+                <input
+                  type="number"
+                  id="sharpenAmount"
+                  value={sharpenAmount}
+                  onChange={(e) =>
+                    setSharpenAmount(parseFloat(e.target.value) || 0)
+                  }
+                  step="0.1"
+                  min="0"
+                />
+              </div>
+              <label htmlFor="imageInput">
+                <input
+                  type="file"
+                  id="imageInput"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
 
-              <span>이미지 선택</span>
-            </label>
+                {/* 이 div를 Drop Zone으로 사용 */}
+                <div
+                  className="input"
+                  onDragOver={handleDragOver} // 드래그 중 이벤트 처리
+                  onDragLeave={handleDragLeave} // 드래그 영역 벗어날 때 처리 (선택 사항)
+                  onDrop={handleDrop} // 드롭 이벤트 처리
+                  // 드래그 중 시각적 피드백을 위한 state나 classname 추가 가능
+                  // style={{ border: isDragging ? '2px dashed blue' : 'none' }}
+                >
+                  이미지를 선택하거나 여기에 드래그 앤 드롭 하세요
+                </div>
+              </label>
 
-            <div>
-              <label htmlFor="blurRadius">블러 반경 (Radius):</label>
-              <input
-                type="number"
-                id="blurRadius"
-                value={blurRadius}
-                onChange={(e) =>
-                  setBlurRadius(parseInt(e.target.value, 10) || 0)
-                }
-                min="0"
-                max="50"
-              />
-              <label htmlFor="sharpenAmount">선명화 강도 (Amount):</label>
-              <input
-                type="number"
-                id="sharpenAmount"
-                value={sharpenAmount}
-                onChange={(e) =>
-                  setSharpenAmount(parseFloat(e.target.value) || 0)
-                }
-                step="0.1"
-                min="0"
-              />
+              <button
+                id="processButton"
+                onClick={handleProcessClick}
+                disabled={!isWasmReady || !loadedImageData}
+              >
+                이미지 처리 시작
+              </button>
             </div>
-
-            <button
-              id="processButton"
-              onClick={handleProcessClick}
-              disabled={!isWasmReady || !loadedImageData}
-            >
-              이미지 처리 시작
-            </button>
-
             <div className="canvas-container">
               <div className="canvas-item">
                 <h2>원본 이미지</h2>
+                {improved && <p>{improved}</p>}
                 <canvas ref={originalCanvasRef}></canvas>
               </div>
               <div className="canvas-item">
                 <h2>WASM 처리 결과</h2>
+                {wasmTime && <p>{wasmTime}</p>}
                 <canvas ref={processedWasmCanvasRef}></canvas>
               </div>
               <div className="canvas-item">
-                <h2>JavaScript 처리 결과</h2>
+                <h2>JS 처리 결과</h2>
+                {jsTime && <p>{jsTime}</p>}
                 <canvas ref={processedJsCanvasRef}></canvas>
               </div>
             </div>
