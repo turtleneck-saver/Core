@@ -256,7 +256,7 @@ const Section10 = () => {
   return (
     <Section
       src="https://cdn-sv.p-e.kr/assets/wallpaper10.mp4"
-      title={"구글 에서 제공하는 wasm 파일 사용"}
+      title={"wasm 최적화"}
     >
       <Style>
         <IframeWrapper>
