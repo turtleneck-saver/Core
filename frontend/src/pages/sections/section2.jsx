@@ -66,6 +66,9 @@ const Section2 = () => {
             "프로젝트 개요",
             "설계 및 개발",
             "기존 프로젝트와의 차별점",
+            "언샤프 마스크 필터링",
+            "웹 어셈블리",
+            "WASM VS JS",
           ].map((item, index) => (
             <li
               key={index}

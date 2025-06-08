@@ -6,20 +6,20 @@ import styled from "styled-components";
 // import different from "../../assets/different.png";
 
 const Style = styled.div``;
-const Section7 = () => {
+const Section8 = () => {
   return (
     <Section
-      src="https://cdn-sv.p-e.kr/assets/wallpaper8.mp4"
-      title={"언샤프 마스크 필터링"}
+      src="https://cdn-sv.p-e.kr/assets/wallpaper9.mp4"
+      title={"웹 어셈블리"}
     >
       <Style>
         <img
           className="info"
-          src="https://cdn-sv.p-e.kr/assets/unsharp.jpg"
-          alt="unsharp"
+          src="https://cdn-sv.p-e.kr/assets/wasm.png"
+          alt="wasm"
         />
       </Style>
     </Section>
   );
 };
-export default Section7;
+export default Section8;
