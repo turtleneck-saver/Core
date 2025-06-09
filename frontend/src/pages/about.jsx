@@ -120,7 +120,7 @@ const About = () => {
     <Style>
       <div className="reveal">
         <div className="slides">
-          {/* <Section1 />
+          <Section1 />
           <Section2 />
           <Section3 />
           <Section4 />
@@ -128,7 +128,7 @@ const About = () => {
           <Section6 />
           <Section7 />
           <Section8 />
-          <Section9 /> */}
+          <Section9 />
           <Section10 />
           <Section11 />
         </div>

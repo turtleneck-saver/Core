@@ -14,7 +14,9 @@ const Style = styled.div`
   .index {
     font-size: 1em;
     font-weight: bold;
-    color: #6f42c1;
+    color: #272924;
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+      1px 1px 0 #ffffff57;
   }
   .gif {
     position: absolute;
@@ -69,6 +71,8 @@ const Section2 = () => {
             "언샤프 마스크 필터링",
             "웹 어셈블리",
             "WASM VS JS",
+            "WASM 최적화",
+            "회고록",
           ].map((item, index) => (
             <li
               key={index}

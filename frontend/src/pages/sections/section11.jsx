@@ -20,7 +20,7 @@ const Section11 = () => {
   return (
     <Section
       src="https://cdn-sv.p-e.kr/assets/wallpaper11.mp4"
-      title={"구글 에서 제공하는 wasm 파일 사용"}
+      title={"회고록"}
     >
       <Style>
         <button
@@ -32,7 +32,7 @@ const Section11 = () => {
           }}
           onClick={handleClick}
         >
-          Notion 페이지로 이동
+          Notion
         </button>
       </Style>
     </Section>
