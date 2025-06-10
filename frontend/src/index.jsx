@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Video from "./components/video";
 import OldVideo from "./components/oldVideo";
 import NewVideo from "./components/newVideo";
+import Dashboard from "./pages/Dashboard";
 import About from "./pages/about";
 const Main = () => {
   return (
@@ -13,6 +14,7 @@ const Main = () => {
         <Route path="/old" element={<OldVideo />} />
         <Route path="/new" element={<NewVideo />} />
         <Route path="/about" element={<About />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
